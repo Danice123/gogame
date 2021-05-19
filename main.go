@@ -7,7 +7,7 @@ import (
 )
 
 func run() {
-	game := display.New(pixelgl.WindowConfig{
+	game := display.NewDisplay(pixelgl.WindowConfig{
 		Title:  "Some Game",
 		Bounds: pixel.R(0, 0, 1024, 768),
 		VSync:  true,
