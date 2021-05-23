@@ -1,7 +1,7 @@
 package tiledmap
 
 import (
-	"path/filepath"
+	"image/color"
 
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
@@ -9,33 +9,45 @@ import (
 )
 
 type OrthoMap struct {
-	Name      string
 	tiledMap  *tiled.Map
 	tiledSets map[uint32]*TiledSet
 }
 
-func (ths *OrthoMap) Init() {
-	loadedMap, err := tiled.LoadFromFile(filepath.Join("maps", ths.Name+".tmx"))
+func NewOrthoMap(path string) *OrthoMap {
+	loadedMap, err := tiled.LoadFromFile(path)
 	if err != nil {
 		panic(err)
 	}
-	ths.tiledMap = loadedMap
-	ths.tiledSets = make(map[uint32]*TiledSet)
 
-	for _, tileset := range ths.tiledMap.Tilesets {
-		ths.tiledSets[tileset.FirstGID] = NewTiledSet(tileset)
+	m := &OrthoMap{
+		tiledMap:  loadedMap,
+		tiledSets: make(map[uint32]*TiledSet),
 	}
+
+	for _, tileset := range m.tiledMap.Tilesets {
+		m.tiledSets[tileset.FirstGID] = NewTiledSet(tileset)
+	}
+
+	return m
 }
 
 func (ths *OrthoMap) NumLayers() int {
 	return len(ths.tiledMap.Layers)
 }
 
+func (ths *OrthoMap) RenderBackground(delta int64, window *pixelgl.Window) {
+	if ths.tiledMap.BackgroundColor != nil {
+		window.Clear(ths.tiledMap.BackgroundColor)
+	} else {
+		window.Clear(color.White)
+	}
+}
+
 func (ths *OrthoMap) RenderLayer(delta int64, window *pixelgl.Window, layer int) {
 	tiledLayer := ths.tiledMap.Layers[layer]
 
 	for _, tiledSet := range ths.tiledSets {
-		tiledSet.Batch.Clear()
+		tiledSet.batch.Clear()
 	}
 
 	tilePointer := 0
@@ -51,13 +63,13 @@ func (ths *OrthoMap) RenderLayer(delta int64, window *pixelgl.Window, layer int)
 			matrix := pixel.IM.Moved(window.Bounds().Center().Sub(centerV))
 			matrix = matrix.Moved(location)
 
-			tileSprite := ths.tiledSets[tiledLayer.Tiles[tilePointer].Tileset.FirstGID].TileCache[tiledLayer.Tiles[tilePointer].ID]
-			tileSprite.Draw(ths.tiledSets[tiledLayer.Tiles[tilePointer].Tileset.FirstGID].Batch, matrix)
+			tileSprite := ths.tiledSets[tiledLayer.Tiles[tilePointer].Tileset.FirstGID].tileCache[tiledLayer.Tiles[tilePointer].ID]
+			tileSprite.Draw(ths.tiledSets[tiledLayer.Tiles[tilePointer].Tileset.FirstGID].batch, matrix)
 			tilePointer++
 		}
 	}
 
 	for _, tiledSet := range ths.tiledSets {
-		tiledSet.Batch.Draw(window)
+		tiledSet.batch.Draw(window)
 	}
 }
