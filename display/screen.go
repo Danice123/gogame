@@ -17,14 +17,14 @@ type ScreenHandler struct {
 	child        *ScreenHandler
 }
 
-func (ths ScreenHandler) Tick(delta int64) {
+func (ths *ScreenHandler) Tick(delta int64) {
 	ths.screen.Tick(delta)
 	if ths.child != nil {
 		ths.child.Tick(delta)
 	}
 }
 
-func (ths ScreenHandler) Render(delta int64, window *pixelgl.Window) {
+func (ths *ScreenHandler) Render(delta int64, window *pixelgl.Window) {
 	if !ths.renderBehind {
 		window.Clear(color.White)
 	}
@@ -33,7 +33,7 @@ func (ths ScreenHandler) Render(delta int64, window *pixelgl.Window) {
 	}
 }
 
-func (ths ScreenHandler) shouldRenderAbove() bool {
+func (ths *ScreenHandler) shouldRenderAbove() bool {
 	if !ths.renderBehind || (ths.child != nil && !ths.child.shouldRenderAbove()) {
 		return false
 	}
