@@ -1,4 +1,4 @@
-package display
+package screen
 
 import (
 	"image/color"
@@ -15,6 +15,10 @@ type Screen interface {
 type ScreenHandler struct {
 	screen Screen
 	child  *ScreenHandler
+}
+
+func (ths *ScreenHandler) ChangeScreen(screen Screen) {
+	ths.screen = screen
 }
 
 func (ths *ScreenHandler) Tick(delta int64) {

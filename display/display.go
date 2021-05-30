@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/Danice123/idk/display/screen"
 	"github.com/faiface/pixel/pixelgl"
 )
 
 type Display struct {
 	window     *pixelgl.Window
-	screen     *ScreenHandler
+	screen     *screen.ScreenHandler
 	frameTimer time.Time
 }
 
@@ -21,7 +22,7 @@ func NewDisplay(cfg pixelgl.WindowConfig) *Display {
 
 	return &Display{
 		window: win,
-		screen: &ScreenHandler{},
+		screen: &screen.ScreenHandler{},
 	}
 }
 
@@ -42,6 +43,6 @@ func (ths *Display) Tick(delta int64) {
 	ths.screen.Tick(delta)
 }
 
-func (ths *Display) ChangeScreen(screen Screen) {
-	ths.screen.screen = screen
+func (ths *Display) ChangeScreen(screen screen.Screen) {
+	ths.screen.ChangeScreen(screen)
 }

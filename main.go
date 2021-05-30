@@ -6,6 +6,7 @@ import (
 
 	"github.com/Danice123/idk/display"
 	"github.com/Danice123/idk/display/screen/mapscreen"
+	"github.com/Danice123/idk/display/texturepacker"
 	"github.com/Danice123/idk/display/tiledmap"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
@@ -16,6 +17,8 @@ type Game struct {
 }
 
 func (ths *Game) Start() {
+	texturepacker.NewSpriteSheet(filepath.Join("sheets", "Entity.json"))
+
 	tmap := tiledmap.NewOrthoMap(filepath.Join("maps", "ortho.tmx"))
 	mapscrn := &mapscreen.MapScreen{
 		TiledMap: tmap,
