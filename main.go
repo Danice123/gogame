@@ -5,24 +5,31 @@ import (
 	"time"
 
 	"github.com/Danice123/idk/display"
+	displayEntity "github.com/Danice123/idk/display/entity"
 	"github.com/Danice123/idk/display/screen/mapscreen"
 	"github.com/Danice123/idk/display/texturepacker"
 	"github.com/Danice123/idk/display/tiledmap"
+	"github.com/Danice123/idk/logic/entity"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )
 
 type Game struct {
 	display *display.Display
+	player  *entity.Player
 }
 
 func (ths *Game) Start() {
-	texturepacker.NewSpriteSheet(filepath.Join("sheets", "Entity.json"))
+	ss := texturepacker.NewSpriteSheet(filepath.Join("sheets", "Entity.json"))
+	ths.player = entity.NewPlayer(ss)
 
 	tmap := tiledmap.NewOrthoMap(filepath.Join("maps", "ortho.tmx"))
 	mapscrn := &mapscreen.MapScreen{
-		TiledMap: tmap,
+		TiledMap:      tmap,
+		EntityHandler: &displayEntity.EntityHandler{},
+		Player:        ths.player,
 	}
+	mapscrn.EntityHandler.AddEntity(ths.player)
 	ths.display.ChangeScreen(mapscrn)
 
 	spf := 16666 * time.Microsecond
@@ -30,7 +37,7 @@ func (ths *Game) Start() {
 		for {
 			tickTimer := time.Now()
 
-			ths.display.Tick(0)
+			ths.display.Tick(0) // Update time?
 
 			sleepTime := spf - time.Since(tickTimer)
 			time.Sleep(sleepTime)

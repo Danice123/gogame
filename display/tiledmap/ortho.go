@@ -9,6 +9,8 @@ import (
 )
 
 type OrthoMap struct {
+	TileSize int
+
 	tiledMap  *tiled.Map
 	tiledSets map[uint32]*TiledSet
 }
@@ -18,8 +20,12 @@ func NewOrthoMap(path string) *OrthoMap {
 	if err != nil {
 		panic(err)
 	}
+	if loadedMap.TileWidth != loadedMap.TileHeight {
+		panic("Cannot handle rectangular tiles!")
+	}
 
 	m := &OrthoMap{
+		TileSize:  loadedMap.TileWidth,
 		tiledMap:  loadedMap,
 		tiledSets: make(map[uint32]*TiledSet),
 	}
@@ -35,7 +41,7 @@ func (ths *OrthoMap) NumLayers() int {
 	return len(ths.tiledMap.Layers)
 }
 
-func (ths *OrthoMap) RenderBackground(delta int64, window *pixelgl.Window) {
+func (ths *OrthoMap) RenderBackground(window *pixelgl.Window) {
 	if ths.tiledMap.BackgroundColor != nil {
 		window.Clear(ths.tiledMap.BackgroundColor)
 	} else {
@@ -43,7 +49,7 @@ func (ths *OrthoMap) RenderBackground(delta int64, window *pixelgl.Window) {
 	}
 }
 
-func (ths *OrthoMap) RenderLayer(delta int64, window *pixelgl.Window, layer int) {
+func (ths *OrthoMap) RenderLayer(layer int) *pixelgl.Canvas {
 	tiledLayer := ths.tiledMap.Layers[layer]
 
 	for _, tiledSet := range ths.tiledSets {
@@ -57,11 +63,7 @@ func (ths *OrthoMap) RenderLayer(delta int64, window *pixelgl.Window, layer int)
 				tilePointer++
 				continue
 			}
-			location := pixel.V(float64(x*ths.tiledMap.TileWidth), float64(y*ths.tiledMap.TileHeight))
-			centerV := pixel.V(float64(ths.tiledMap.Width*ths.tiledMap.TileWidth/2), float64(ths.tiledMap.Height*ths.tiledMap.TileHeight/2))
-
-			matrix := pixel.IM.Moved(window.Bounds().Center().Sub(centerV))
-			matrix = matrix.Moved(location)
+			matrix := pixel.IM.Moved(pixel.V(float64(x*ths.TileSize+ths.TileSize/2), float64(y*ths.TileSize+ths.TileSize/2)))
 
 			tileSprite := ths.tiledSets[tiledLayer.Tiles[tilePointer].Tileset.FirstGID].tileCache[tiledLayer.Tiles[tilePointer].ID]
 			tileSprite.Draw(ths.tiledSets[tiledLayer.Tiles[tilePointer].Tileset.FirstGID].batch, matrix)
@@ -69,7 +71,11 @@ func (ths *OrthoMap) RenderLayer(delta int64, window *pixelgl.Window, layer int)
 		}
 	}
 
+	canvas := pixelgl.NewCanvas(pixel.R(0, 0, float64(ths.tiledMap.Width*ths.tiledMap.TileWidth), float64(ths.tiledMap.Height*ths.tiledMap.TileHeight)))
+
 	for _, tiledSet := range ths.tiledSets {
-		tiledSet.batch.Draw(window)
+		tiledSet.batch.Draw(canvas)
 	}
+
+	return canvas
 }

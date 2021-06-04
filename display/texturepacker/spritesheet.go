@@ -45,6 +45,7 @@ type PackedTextures struct {
 }
 
 type SpriteSheet struct {
+	Name    string
 	Batch   *pixel.Batch
 	Sprites map[string]map[string][]*pixel.Sprite
 }
@@ -61,7 +62,9 @@ func NewSpriteSheet(path string) *SpriteSheet {
 		panic(err.Error())
 	}
 
-	sheet := &SpriteSheet{}
+	sheet := &SpriteSheet{
+		Name: data.Meta.Image,
+	}
 	image := utils.LoadPicture(filepath.Join(filepath.Dir(path), data.Meta.Image))
 	sheet.Batch = pixel.NewBatch(&pixel.TrianglesData{}, image)
 	sheet.Sprites = make(map[string]map[string][]*pixel.Sprite)
