@@ -3,6 +3,7 @@ package screen
 import (
 	"image/color"
 
+	"github.com/Danice123/idk/display/utils"
 	"github.com/faiface/pixel/pixelgl"
 )
 
@@ -10,6 +11,7 @@ type Screen interface {
 	ShouldRenderBehind() bool
 	Tick(delta int64)
 	Render(delta int64, window *pixelgl.Window)
+	HandleKey(key utils.KEY)
 }
 
 type ScreenHandler struct {
@@ -50,4 +52,14 @@ func (ths *ScreenHandler) shouldRenderAbove() bool {
 		return false
 	}
 	return true
+}
+
+func (ths *ScreenHandler) Input(key utils.KEY) {
+	if ths.screen != nil {
+		if ths.child != nil {
+			ths.child.Input(key)
+		} else {
+			ths.screen.HandleKey(key)
+		}
+	}
 }

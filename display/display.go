@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/Danice123/idk/display/screen"
+	"github.com/Danice123/idk/display/utils"
 	"github.com/faiface/pixel/pixelgl"
 )
 
@@ -39,10 +40,23 @@ func (ths *Display) StartRenderLoop() {
 	}
 }
 
-func (ths *Display) Tick(delta int64) {
-	ths.screen.Tick(delta)
-}
-
 func (ths *Display) ChangeScreen(screen screen.Screen) {
 	ths.screen.ChangeScreen(screen)
+}
+
+func (ths *Display) Tick(delta int64) {
+	ths.screen.Tick(delta)
+
+	if ths.window.JustPressed(pixelgl.KeyUp) {
+		ths.screen.Input(utils.UP)
+	}
+	if ths.window.JustPressed(pixelgl.KeyDown) {
+		ths.screen.Input(utils.DOWN)
+	}
+	if ths.window.JustPressed(pixelgl.KeyLeft) {
+		ths.screen.Input(utils.LEFT)
+	}
+	if ths.window.JustPressed(pixelgl.KeyRight) {
+		ths.screen.Input(utils.RIGHT)
+	}
 }

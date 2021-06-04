@@ -37,6 +37,13 @@ func NewOrthoMap(path string) *OrthoMap {
 	return m
 }
 
+func (ths *OrthoMap) MapSize() pixel.Vec {
+	return pixel.Vec{
+		X: float64(ths.tiledMap.Width),
+		Y: float64(ths.tiledMap.Height),
+	}
+}
+
 func (ths *OrthoMap) NumLayers() int {
 	return len(ths.tiledMap.Layers)
 }

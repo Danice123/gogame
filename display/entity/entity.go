@@ -24,8 +24,8 @@ func (ths *EntityHandler) initialize() {
 func (ths *EntityHandler) AddEntity(added entity.Entity) {
 	ths.initialize()
 	ths.entities = append(ths.entities, added)
-	if _, ok := ths.sheetCache[added.GetSpriteSheet().Name]; !ok {
-		ths.sheetCache[added.GetSpriteSheet().Name] = added.GetSpriteSheet()
+	if _, ok := ths.sheetCache[added.SpriteSheet().Name]; !ok {
+		ths.sheetCache[added.SpriteSheet().Name] = added.SpriteSheet()
 	}
 }
 
@@ -40,8 +40,11 @@ func (ths *EntityHandler) Render(canvas *pixelgl.Canvas, tileSize int, layer int
 
 	for _, e := range ths.entities {
 		if e.GetCoord().Layer == layer {
-			matrix := pixel.IM.Moved(e.GetCoord().Vector().Scaled(float64(tileSize)).Sub(pixel.V(float64(tileSize/2), float64(tileSize/2))))
-			e.GetSprite().Draw(e.GetSpriteSheet().Batch, matrix)
+			matrix := pixel.IM.Moved(e.GetCoord().Vector().Scaled(float64(tileSize)).Add(pixel.V(float64(tileSize)/2, float64(tileSize)/2)))
+			if e.Translation() != nil {
+				matrix = matrix.Moved(e.Translation().Vector(tileSize))
+			}
+			e.Sprite().Draw(e.SpriteSheet().Batch, matrix)
 		}
 	}
 

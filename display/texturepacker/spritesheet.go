@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/Danice123/idk/display/utils"
@@ -47,7 +48,7 @@ type PackedTextures struct {
 type SpriteSheet struct {
 	Name    string
 	Batch   *pixel.Batch
-	Sprites map[string]map[string][]*pixel.Sprite
+	Sprites map[string]map[string]map[int]*pixel.Sprite
 }
 
 func NewSpriteSheet(path string) *SpriteSheet {
@@ -67,22 +68,27 @@ func NewSpriteSheet(path string) *SpriteSheet {
 	}
 	image := utils.LoadPicture(filepath.Join(filepath.Dir(path), data.Meta.Image))
 	sheet.Batch = pixel.NewBatch(&pixel.TrianglesData{}, image)
-	sheet.Sprites = make(map[string]map[string][]*pixel.Sprite)
+	sheet.Sprites = make(map[string]map[string]map[int]*pixel.Sprite)
 
 	for descriptor, sprite := range data.Frames {
-		splitDescriptor := strings.Split(descriptor, "_")
+		splitDescriptor := strings.Split(strings.TrimSuffix(descriptor, ".png"), "_")
 		spriteName := splitDescriptor[0]
 		spriteState := splitDescriptor[1]
+		spriteFrame := splitDescriptor[2]
 
 		s := pixel.NewSprite(image, pixel.R(float64(sprite.Frame.X), float64(sprite.Frame.Y), float64(sprite.Frame.X+sprite.Frame.W), float64(sprite.Frame.Y+sprite.Frame.H)))
 
 		if sheet.Sprites[spriteName] == nil {
-			sheet.Sprites[spriteName] = make(map[string][]*pixel.Sprite)
+			sheet.Sprites[spriteName] = make(map[string]map[int]*pixel.Sprite)
 		}
 		if sheet.Sprites[spriteName][spriteState] == nil {
-			sheet.Sprites[spriteName][spriteState] = []*pixel.Sprite{}
+			sheet.Sprites[spriteName][spriteState] = make(map[int]*pixel.Sprite)
 		}
-		sheet.Sprites[spriteName][spriteState] = append(sheet.Sprites[spriteName][spriteState], s)
+		if v, err := strconv.Atoi(spriteFrame); err == nil {
+			sheet.Sprites[spriteName][spriteState][v] = s
+		} else {
+			panic(err)
+		}
 	}
 
 	return sheet
