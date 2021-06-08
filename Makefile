@@ -4,6 +4,7 @@ default: deps tidy fmt vet test build dist
 
 deps:
 	go get -u github.com/go-bindata/go-bindata/...
+	asdf reshim golang
 
 tidy:
 	go mod tidy
