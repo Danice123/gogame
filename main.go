@@ -8,12 +8,12 @@ import (
 	"runtime/pprof"
 	"time"
 
-	"github.com/Danice123/idk/display"
-	displayEntity "github.com/Danice123/idk/display/entity"
-	"github.com/Danice123/idk/display/screen/mapscreen"
-	"github.com/Danice123/idk/display/texturepacker"
-	"github.com/Danice123/idk/display/tiledmap"
-	"github.com/Danice123/idk/logic/entity"
+	"github.com/Danice123/idk/pkg/display"
+	displayEntity "github.com/Danice123/idk/pkg/display/entity"
+	"github.com/Danice123/idk/pkg/display/screen/mapscreen"
+	"github.com/Danice123/idk/pkg/display/texturepacker"
+	"github.com/Danice123/idk/pkg/display/tiledmap"
+	"github.com/Danice123/idk/pkg/logic/entity"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )

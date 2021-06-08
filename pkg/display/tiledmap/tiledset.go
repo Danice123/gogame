@@ -3,7 +3,7 @@ package tiledmap
 import (
 	"image"
 
-	"github.com/Danice123/idk/display/utils"
+	"github.com/Danice123/idk/pkg/display/utils"
 	"github.com/faiface/pixel"
 	"github.com/lafriks/go-tiled"
 )

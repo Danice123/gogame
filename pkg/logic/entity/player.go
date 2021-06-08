@@ -1,8 +1,8 @@
 package entity
 
 import (
-	"github.com/Danice123/idk/display/texturepacker"
-	"github.com/Danice123/idk/logic"
+	"github.com/Danice123/idk/pkg/display/texturepacker"
+	"github.com/Danice123/idk/pkg/logic"
 )
 
 type Player struct {

@@ -1,7 +1,7 @@
 package entity
 
 import (
-	"github.com/Danice123/idk/logic"
+	"github.com/Danice123/idk/pkg/logic"
 	"github.com/faiface/pixel"
 )
 

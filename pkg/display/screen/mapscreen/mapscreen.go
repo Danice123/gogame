@@ -3,11 +3,11 @@ package mapscreen
 import (
 	"image/color"
 
-	displayEntity "github.com/Danice123/idk/display/entity"
-	"github.com/Danice123/idk/display/tiledmap"
-	"github.com/Danice123/idk/display/utils"
-	"github.com/Danice123/idk/logic"
-	"github.com/Danice123/idk/logic/entity"
+	displayEntity "github.com/Danice123/idk/pkg/display/entity"
+	"github.com/Danice123/idk/pkg/display/tiledmap"
+	"github.com/Danice123/idk/pkg/display/utils"
+	"github.com/Danice123/idk/pkg/logic"
+	"github.com/Danice123/idk/pkg/logic/entity"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )

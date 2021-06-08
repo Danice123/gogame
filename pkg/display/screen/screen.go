@@ -3,7 +3,7 @@ package screen
 import (
 	"image/color"
 
-	"github.com/Danice123/idk/display/utils"
+	"github.com/Danice123/idk/pkg/display/utils"
 	"github.com/faiface/pixel/pixelgl"
 )
 
