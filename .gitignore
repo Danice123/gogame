@@ -1,4 +1,3 @@
 *.tiled-session
 dist
 dist.zip
-bindata.go
