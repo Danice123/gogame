@@ -61,7 +61,7 @@ func (ths *OrthoMap) RenderBackground(window *pixelgl.Window) {
 	}
 }
 
-func (ths *OrthoMap) RenderLayer(layer int, scaleFactor float64) *pixelgl.Canvas {
+func (ths *OrthoMap) RenderLayer(canvas *pixelgl.Canvas, layer int, scaleFactor float64) {
 	tiledLayer := ths.tiledMap.Layers[layer]
 
 	for _, tiledSet := range ths.tiledSets {
@@ -84,11 +84,7 @@ func (ths *OrthoMap) RenderLayer(layer int, scaleFactor float64) *pixelgl.Canvas
 		}
 	}
 
-	canvas := pixelgl.NewCanvas(pixel.R(0, 0, float64(ths.tiledMap.Width)*tileSize, float64(ths.tiledMap.Height)*tileSize))
-
 	for _, tiledSet := range ths.tiledSets {
 		tiledSet.batch.Draw(canvas)
 	}
-
-	return canvas
 }

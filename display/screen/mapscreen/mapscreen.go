@@ -1,6 +1,8 @@
 package mapscreen
 
 import (
+	"image/color"
+
 	displayEntity "github.com/Danice123/idk/display/entity"
 	"github.com/Danice123/idk/display/tiledmap"
 	"github.com/Danice123/idk/display/utils"
@@ -14,6 +16,8 @@ type MapScreen struct {
 	TiledMap      *tiledmap.OrthoMap
 	EntityHandler *displayEntity.EntityHandler
 	Player        *entity.Player
+
+	mapCanvas *pixelgl.Canvas
 }
 
 func (ths *MapScreen) ShouldRenderBehind() bool {
@@ -25,9 +29,17 @@ func (ths *MapScreen) Tick(delta int64) {
 }
 
 func (ths *MapScreen) Render(delta int64, window *pixelgl.Window) {
-	ths.TiledMap.RenderBackground(window)
-
 	tileRatio := window.Bounds().W() / float64(ths.TiledMap.TileSize*10)
+
+	if ths.mapCanvas == nil {
+		ths.mapCanvas = pixelgl.NewCanvas(pixel.R(0, 0, ths.TiledMap.MapSize().X*float64(ths.TiledMap.TileSize)*tileRatio, ths.TiledMap.MapSize().Y*float64(ths.TiledMap.TileSize)*tileRatio))
+	}
+	ths.mapCanvas.Clear(color.White)
+
+	for i := 0; i < ths.TiledMap.NumLayers(); i++ {
+		ths.TiledMap.RenderLayer(ths.mapCanvas, i, tileRatio)
+		ths.EntityHandler.Render(ths.mapCanvas, ths.TiledMap.TileSize, tileRatio, i)
+	}
 
 	playerV := ths.TiledMap.MapSize().Scaled(0.5).Sub(ths.Player.Coord.Vector())
 	playerScaled := playerV.Scaled(float64(ths.TiledMap.TileSize) * tileRatio).Sub(pixel.V(float64(ths.TiledMap.TileSize)*tileRatio/2, float64(ths.TiledMap.TileSize)*tileRatio/2))
@@ -36,12 +48,8 @@ func (ths *MapScreen) Render(delta int64, window *pixelgl.Window) {
 	}
 
 	camera := pixel.IM.Moved(playerScaled).Moved(window.Bounds().Center())
-
-	for i := 0; i < ths.TiledMap.NumLayers(); i++ {
-		layer := ths.TiledMap.RenderLayer(i, tileRatio)
-		ths.EntityHandler.Render(layer, ths.TiledMap.TileSize, tileRatio, i)
-		layer.Draw(window, camera)
-	}
+	ths.TiledMap.RenderBackground(window)
+	ths.mapCanvas.Draw(window, camera)
 }
 
 func (ths *MapScreen) isValidDestination(coord logic.Coord) bool {
