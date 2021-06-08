@@ -1,17 +1,28 @@
 .DEFAULT_GOAL := default
+.PHONY: deps tidy fmt vet build dist
+default: deps tidy fmt vet build dist
 
-default: build dist
+deps:
+	go get -u github.com/go-bindata/go-bindata/...
 
-.PHONY: build
+tidy:
+	go mod tidy
+
+fmt:
+	go fmt ./...
+
+vet:
+	go vet ./...
+
 build:
 	mkdir -p dist
-	CGO_ENABLED=0 go build -o dist/gogame main.go
+	go build -o dist/ ./...
 
-.PHONY: dist
 dist:
-	cp -R sheets dist
-	cp -R maps dist
+	cp -R pkg/sheets dist
+	cp -R pkg/maps dist
 	zip -r dist.zip dist
 
-
+clean:
+	rm -rf dist
 
