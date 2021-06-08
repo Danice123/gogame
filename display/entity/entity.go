@@ -29,7 +29,7 @@ func (ths *EntityHandler) AddEntity(added entity.Entity) {
 	}
 }
 
-func (ths *EntityHandler) Render(canvas *pixelgl.Canvas, tileSize int, layer int) {
+func (ths *EntityHandler) Render(canvas *pixelgl.Canvas, tileSize int, tileRatio float64, layer int) {
 	if ths.entities == nil {
 		return
 	}
@@ -38,11 +38,12 @@ func (ths *EntityHandler) Render(canvas *pixelgl.Canvas, tileSize int, layer int
 		ss.Batch.Clear()
 	}
 
+	scaledTileSize := float64(tileSize) * tileRatio
 	for _, e := range ths.entities {
 		if e.GetCoord().Layer == layer {
-			matrix := pixel.IM.Moved(e.GetCoord().Vector().Scaled(float64(tileSize)).Add(pixel.V(float64(tileSize)/2, float64(tileSize)/2+4)))
+			matrix := pixel.IM.Scaled(pixel.ZV, tileRatio).Moved(e.GetCoord().Vector().Scaled(scaledTileSize).Add(pixel.V(scaledTileSize/2, scaledTileSize/2)))
 			if e.Translation() != nil {
-				matrix = matrix.Moved(e.Translation().Vector(tileSize))
+				matrix = matrix.Moved(e.Translation().Vector(scaledTileSize))
 			}
 			e.Sprite().Draw(e.SpriteSheet().Batch, matrix)
 		}

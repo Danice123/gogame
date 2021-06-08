@@ -30,16 +30,16 @@ func (ths *MapScreen) Render(delta int64, window *pixelgl.Window) {
 	tileRatio := window.Bounds().W() / float64(ths.TiledMap.TileSize*10)
 
 	playerV := ths.TiledMap.MapSize().Scaled(0.5).Sub(ths.Player.Coord.Vector())
-	playerScaled := playerV.Scaled(float64(ths.TiledMap.TileSize)).Sub(pixel.V(float64(ths.TiledMap.TileSize)/2, float64(ths.TiledMap.TileSize)/2))
+	playerScaled := playerV.Scaled(float64(ths.TiledMap.TileSize) * tileRatio).Sub(pixel.V(float64(ths.TiledMap.TileSize)*tileRatio/2, float64(ths.TiledMap.TileSize)*tileRatio/2))
 	if ths.Player.Translation() != nil {
-		playerScaled = playerScaled.Sub(ths.Player.Translation().Vector(ths.TiledMap.TileSize))
+		playerScaled = playerScaled.Sub(ths.Player.Translation().Vector(float64(ths.TiledMap.TileSize) * tileRatio))
 	}
 
-	camera := pixel.IM.Moved(playerScaled).Scaled(pixel.Vec{}, tileRatio).Moved(window.Bounds().Center())
+	camera := pixel.IM.Moved(playerScaled).Moved(window.Bounds().Center())
 
 	for i := 0; i < ths.TiledMap.NumLayers(); i++ {
-		layer := ths.TiledMap.RenderLayer(i)
-		ths.EntityHandler.Render(layer, ths.TiledMap.TileSize, i)
+		layer := ths.TiledMap.RenderLayer(i, tileRatio)
+		ths.EntityHandler.Render(layer, ths.TiledMap.TileSize, tileRatio, i)
 		layer.Draw(window, camera)
 	}
 }

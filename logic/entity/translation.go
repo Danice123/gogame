@@ -10,8 +10,8 @@ type Translation struct {
 	Completed float64
 }
 
-func (ths *Translation) Vector(tileSize int) pixel.Vec {
-	partial := ths.Completed * float64(tileSize)
+func (ths *Translation) Vector(scaledTileSize float64) pixel.Vec {
+	partial := ths.Completed * scaledTileSize
 
 	switch ths.Direction {
 	case logic.NORTH:

@@ -61,7 +61,7 @@ func (ths *OrthoMap) RenderBackground(window *pixelgl.Window) {
 	}
 }
 
-func (ths *OrthoMap) RenderLayer(layer int) *pixelgl.Canvas {
+func (ths *OrthoMap) RenderLayer(layer int, scaleFactor float64) *pixelgl.Canvas {
 	tiledLayer := ths.tiledMap.Layers[layer]
 
 	for _, tiledSet := range ths.tiledSets {
@@ -69,13 +69,14 @@ func (ths *OrthoMap) RenderLayer(layer int) *pixelgl.Canvas {
 	}
 
 	tilePointer := 0
+	tileSize := float64(ths.TileSize) * scaleFactor
 	for y := 0; y < ths.tiledMap.Height; y++ {
 		for x := 0; x < ths.tiledMap.Width; x++ {
 			if tiledLayer.Tiles[tilePointer].IsNil() {
 				tilePointer++
 				continue
 			}
-			matrix := pixel.IM.Moved(pixel.V(float64(x*ths.TileSize+ths.TileSize/2), float64(y*ths.TileSize+ths.TileSize/2)))
+			matrix := pixel.IM.Scaled(pixel.ZV, scaleFactor).Moved(pixel.V(float64(x)*tileSize+tileSize/2, float64(y)*tileSize+tileSize/2))
 
 			tileSprite := ths.tiledSets[tiledLayer.Tiles[tilePointer].Tileset.FirstGID].tileCache[tiledLayer.Tiles[tilePointer].ID]
 			tileSprite.Draw(ths.tiledSets[tiledLayer.Tiles[tilePointer].Tileset.FirstGID].batch, matrix)
@@ -83,7 +84,7 @@ func (ths *OrthoMap) RenderLayer(layer int) *pixelgl.Canvas {
 		}
 	}
 
-	canvas := pixelgl.NewCanvas(pixel.R(0, 0, float64(ths.tiledMap.Width*ths.tiledMap.TileWidth), float64(ths.tiledMap.Height*ths.tiledMap.TileHeight)))
+	canvas := pixelgl.NewCanvas(pixel.R(0, 0, float64(ths.tiledMap.Width)*tileSize, float64(ths.tiledMap.Height)*tileSize))
 
 	for _, tiledSet := range ths.tiledSets {
 		tiledSet.batch.Draw(canvas)

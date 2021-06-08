@@ -1,7 +1,11 @@
 package main
 
 import (
+	"flag"
+	"log"
+	"os"
 	"path/filepath"
+	"runtime/pprof"
 	"time"
 
 	"github.com/Danice123/idk/display"
@@ -13,6 +17,8 @@ import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )
+
+var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to `file`")
 
 type Game struct {
 	display *display.Display
@@ -59,5 +65,17 @@ func run() {
 }
 
 func main() {
+	flag.Parse()
+	if *cpuprofile != "" {
+		f, err := os.Create(*cpuprofile)
+		if err != nil {
+			log.Fatal("could not create CPU profile: ", err)
+		}
+		defer f.Close() // error handling omitted for example
+		if err := pprof.StartCPUProfile(f); err != nil {
+			log.Fatal("could not start CPU profile: ", err)
+		}
+		defer pprof.StopCPUProfile()
+	}
 	pixelgl.Run(run)
 }
