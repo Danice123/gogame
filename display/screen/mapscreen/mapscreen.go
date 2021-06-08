@@ -13,11 +13,23 @@ import (
 )
 
 type MapScreen struct {
-	TiledMap      *tiledmap.OrthoMap
-	EntityHandler *displayEntity.EntityHandler
-	Player        *entity.Player
+	tMap          *tiledmap.OrthoMap
+	entityHandler *displayEntity.EntityHandler
+	player        *entity.Player
+	mapCanvas     *pixelgl.Canvas
+}
 
-	mapCanvas *pixelgl.Canvas
+func New(tMap *tiledmap.OrthoMap, entities []entity.Entity, player *entity.Player) *MapScreen {
+	screen := &MapScreen{
+		tMap:          tMap,
+		entityHandler: displayEntity.NewEntityHandler(),
+		player:        player,
+	}
+	screen.entityHandler.AddEntity(player)
+	for _, entity := range entities {
+		screen.entityHandler.AddEntity(entity)
+	}
+	return screen
 }
 
 func (ths *MapScreen) ShouldRenderBehind() bool {
@@ -25,62 +37,68 @@ func (ths *MapScreen) ShouldRenderBehind() bool {
 }
 
 func (ths *MapScreen) Tick(delta int64) {
-	ths.Player.Tick()
+	ths.player.Tick()
 }
 
 func (ths *MapScreen) Render(delta int64, window *pixelgl.Window) {
-	tileRatio := window.Bounds().W() / float64(ths.TiledMap.TileSize*10)
+	tileRatio := window.Bounds().W() / float64(ths.tMap.TileSize*10)
 
-	if ths.mapCanvas == nil {
-		ths.mapCanvas = pixelgl.NewCanvas(pixel.R(0, 0, ths.TiledMap.MapSize().X*float64(ths.TiledMap.TileSize)*tileRatio, ths.TiledMap.MapSize().Y*float64(ths.TiledMap.TileSize)*tileRatio))
+	if ths.mapCanvas == nil { // Or if window size is changed?
+		ths.mapCanvas = pixelgl.NewCanvas(pixel.R(0, 0, ths.tMap.MapSize().X*float64(ths.tMap.TileSize)*tileRatio, ths.tMap.MapSize().Y*float64(ths.tMap.TileSize)*tileRatio))
 	}
 	ths.mapCanvas.Clear(color.White)
 
-	for i := 0; i < ths.TiledMap.NumLayers(); i++ {
-		ths.TiledMap.RenderLayer(ths.mapCanvas, i, tileRatio)
-		ths.EntityHandler.Render(ths.mapCanvas, ths.TiledMap.TileSize, tileRatio, i)
+	for i := 0; i < ths.tMap.NumLayers(); i++ {
+		ths.tMap.RenderLayer(ths.mapCanvas, i, tileRatio)
+		ths.entityHandler.Render(ths.mapCanvas, ths.tMap.TileSize, tileRatio, i)
 	}
 
-	playerV := ths.TiledMap.MapSize().Scaled(0.5).Sub(ths.Player.Coord.Vector())
-	playerScaled := playerV.Scaled(float64(ths.TiledMap.TileSize) * tileRatio).Sub(pixel.V(float64(ths.TiledMap.TileSize)*tileRatio/2, float64(ths.TiledMap.TileSize)*tileRatio/2))
-	if ths.Player.Translation() != nil {
-		playerScaled = playerScaled.Sub(ths.Player.Translation().Vector(float64(ths.TiledMap.TileSize) * tileRatio))
+	playerV := ths.tMap.MapSize().Scaled(0.5).Sub(ths.player.Coord.Vector())
+	playerScaled := playerV.Scaled(float64(ths.tMap.TileSize) * tileRatio).Sub(pixel.V(float64(ths.tMap.TileSize)*tileRatio/2, float64(ths.tMap.TileSize)*tileRatio/2))
+	if ths.player.Translation() != nil {
+		playerScaled = playerScaled.Sub(ths.player.Translation().Vector(float64(ths.tMap.TileSize) * tileRatio))
 	}
 
 	camera := pixel.IM.Moved(playerScaled).Moved(window.Bounds().Center())
-	ths.TiledMap.RenderBackground(window)
+	ths.tMap.RenderBackground(window)
 	ths.mapCanvas.Draw(window, camera)
 }
 
 func (ths *MapScreen) isValidDestination(coord logic.Coord) bool {
-	return !ths.TiledMap.IsTileAt(coord.X, coord.Y, coord.Layer)
+	if ths.entityHandler.IsEntityAtTile(coord) {
+		return false
+	}
+	if ths.tMap.IsTileAt(coord.X, coord.Y, coord.Layer) {
+		return false
+	}
+	return true
 }
 
 func (ths *MapScreen) HandleKey(key utils.KEY) {
 	switch key {
 	case utils.UP:
-		if ths.isValidDestination(ths.Player.Coord.Translate(logic.NORTH)) {
-			ths.Player.Walk(logic.NORTH)
+		if ths.isValidDestination(ths.player.Coord.Translate(logic.NORTH)) {
+			ths.player.Walk(logic.NORTH)
 		} else {
-			ths.Player.Facing = logic.NORTH
+			ths.player.Face(logic.NORTH)
 		}
 	case utils.DOWN:
-		if ths.isValidDestination(ths.Player.Coord.Translate(logic.SOUTH)) {
-			ths.Player.Walk(logic.SOUTH)
+		if ths.isValidDestination(ths.player.Coord.Translate(logic.SOUTH)) {
+			ths.player.Walk(logic.SOUTH)
 		} else {
-			ths.Player.Facing = logic.SOUTH
+			ths.player.Face(logic.SOUTH)
 		}
 	case utils.LEFT:
-		if ths.isValidDestination(ths.Player.Coord.Translate(logic.WEST)) {
-			ths.Player.Walk(logic.WEST)
+		if ths.isValidDestination(ths.player.Coord.Translate(logic.WEST)) {
+			ths.player.Walk(logic.WEST)
 		} else {
-			ths.Player.Facing = logic.WEST
+			ths.player.Face(logic.WEST)
 		}
 	case utils.RIGHT:
-		if ths.isValidDestination(ths.Player.Coord.Translate(logic.EAST)) {
-			ths.Player.Walk(logic.EAST)
+		if ths.isValidDestination(ths.player.Coord.Translate(logic.EAST)) {
+			ths.player.Walk(logic.EAST)
 		} else {
-			ths.Player.Facing = logic.EAST
+			ths.player.Face(logic.EAST)
 		}
 	}
 }

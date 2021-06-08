@@ -2,6 +2,7 @@ package entity
 
 import (
 	"github.com/Danice123/idk/display/texturepacker"
+	"github.com/Danice123/idk/logic"
 	"github.com/Danice123/idk/logic/entity"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
@@ -12,21 +13,30 @@ type EntityHandler struct {
 	sheetCache map[string]*texturepacker.SpriteSheet
 }
 
-func (ths *EntityHandler) initialize() {
-	if ths.entities == nil {
-		ths.entities = []entity.Entity{}
-	}
-	if ths.sheetCache == nil {
-		ths.sheetCache = make(map[string]*texturepacker.SpriteSheet)
+func NewEntityHandler() *EntityHandler {
+	return &EntityHandler{
+		entities:   []entity.Entity{},
+		sheetCache: make(map[string]*texturepacker.SpriteSheet),
 	}
 }
 
 func (ths *EntityHandler) AddEntity(added entity.Entity) {
-	ths.initialize()
 	ths.entities = append(ths.entities, added)
 	if _, ok := ths.sheetCache[added.SpriteSheet().Name]; !ok {
 		ths.sheetCache[added.SpriteSheet().Name] = added.SpriteSheet()
 	}
+}
+
+func (ths *EntityHandler) IsEntityAtTile(coord logic.Coord) bool {
+	for _, entity := range ths.entities {
+		if coord == entity.GetCoord() {
+			return true
+		}
+		if entity.Translation() != nil && coord == entity.GetCoord().Translate(entity.Translation().Direction) {
+			return true
+		}
+	}
+	return false
 }
 
 func (ths *EntityHandler) Render(canvas *pixelgl.Canvas, tileSize int, tileRatio float64, layer int) {

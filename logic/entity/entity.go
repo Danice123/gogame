@@ -9,6 +9,7 @@ import (
 var tps = 1.0 / 60.0
 
 type Entity interface {
+	Name() string
 	SpriteSheet() *texturepacker.SpriteSheet
 	Sprite() *pixel.Sprite
 	GetCoord() logic.Coord
@@ -16,15 +17,19 @@ type Entity interface {
 }
 
 type Base struct {
-	Name   string
-	Coord  logic.Coord
-	Facing logic.Direction
-	Frame  int
+	EntityName string
+	Coord      logic.Coord
+	Facing     logic.Direction
 
+	Frame       int
 	translation *Translation
 
 	// Tentative
 	Spritesheet *texturepacker.SpriteSheet
+}
+
+func (ths *Base) Name() string {
+	return ths.EntityName
 }
 
 func (ths *Base) SpriteSheet() *texturepacker.SpriteSheet {
@@ -32,7 +37,7 @@ func (ths *Base) SpriteSheet() *texturepacker.SpriteSheet {
 }
 
 func (ths *Base) Sprite() *pixel.Sprite {
-	return ths.Spritesheet.Sprites[ths.Name][string(ths.Facing)][ths.Frame]
+	return ths.Spritesheet.Sprites[ths.EntityName][string(ths.Facing)][ths.Frame]
 }
 
 func (ths *Base) GetCoord() logic.Coord {
@@ -48,7 +53,7 @@ func (ths *Base) Tick() {
 		ths.translation.Completed += 3 * tps
 
 		if int(ths.translation.Completed*100)%25 == 0 {
-			if ths.Frame == len(ths.Spritesheet.Sprites[ths.Name][string(ths.Facing)])-1 {
+			if ths.Frame == len(ths.Spritesheet.Sprites[ths.EntityName][string(ths.Facing)])-1 {
 				ths.Frame = 0
 			} else {
 				ths.Frame++
@@ -60,6 +65,12 @@ func (ths *Base) Tick() {
 			ths.translation = nil
 			ths.Frame = 0
 		}
+	}
+}
+
+func (ths *Base) Face(dir logic.Direction) {
+	if ths.translation == nil {
+		ths.Facing = dir
 	}
 }
 

@@ -12,7 +12,7 @@ type Player struct {
 func NewPlayer(spritesheet *texturepacker.SpriteSheet) *Player {
 	player := &Player{
 		Base: Base{
-			Name: "Red",
+			EntityName: "Red",
 			Coord: logic.Coord{
 				X:     4,
 				Y:     4,
