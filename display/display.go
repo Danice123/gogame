@@ -13,6 +13,8 @@ type Display struct {
 	window     *pixelgl.Window
 	screen     *screen.ScreenHandler
 	frameTimer time.Time
+
+	lastActivation time.Time
 }
 
 func NewDisplay(cfg pixelgl.WindowConfig) *Display {
@@ -41,11 +43,21 @@ func (ths *Display) StartRenderLoop() {
 }
 
 func (ths *Display) ChangeScreen(screen screen.Screen) {
-	ths.screen.ChangeScreen(screen)
+	ths.screen.Screen = screen
 }
 
 func (ths *Display) Tick(delta int64) {
 	ths.screen.Tick(delta)
+
+	if time.Since(ths.lastActivation) > 500*time.Millisecond {
+		if ths.window.Pressed(pixelgl.KeyZ) {
+			ths.screen.Input(utils.ACTIVATE)
+			ths.lastActivation = time.Now()
+		} else if ths.window.Pressed(pixelgl.KeyX) {
+			ths.screen.Input(utils.DECLINE)
+			ths.lastActivation = time.Now()
+		}
+	}
 
 	if ths.window.Pressed(pixelgl.KeyUp) {
 		ths.screen.Input(utils.UP)

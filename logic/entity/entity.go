@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"github.com/Danice123/idk/display/screen"
+	"github.com/Danice123/idk/display/screen/chatbox"
 	"github.com/Danice123/idk/display/texturepacker"
 	"github.com/Danice123/idk/logic"
 	"github.com/faiface/pixel"
@@ -14,6 +16,7 @@ type Entity interface {
 	Sprite() *pixel.Sprite
 	GetCoord() logic.Coord
 	Translation() *Translation
+	Activate(screen screen.Screen, player *Player)
 }
 
 type Base struct {
@@ -81,4 +84,13 @@ func (ths *Base) Walk(dir logic.Direction) {
 			Direction: dir,
 		}
 	}
+}
+
+func (ths *Base) Activate(screen screen.Screen, player *Player) {
+	go func() {
+		chat := chatbox.New("Test")
+		screen.SetChild(chat)
+		<-chat.Finished
+		screen.SetChild(nil)
+	}()
 }

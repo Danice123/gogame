@@ -8,58 +8,72 @@ import (
 )
 
 type Screen interface {
+	Child() Screen
+	SetChild(screen Screen)
 	ShouldRenderBehind() bool
 	Tick(delta int64)
 	Render(delta int64, window *pixelgl.Window)
 	HandleKey(key utils.KEY)
 }
 
-type ScreenHandler struct {
-	screen Screen
-	child  *ScreenHandler
+type BaseScreen struct {
+	child Screen
 }
 
-func (ths *ScreenHandler) ChangeScreen(screen Screen) {
-	ths.screen = screen
+func (ths *BaseScreen) Child() Screen {
+	return ths.child
+}
+
+func (ths *BaseScreen) SetChild(screen Screen) {
+	ths.child = screen
+}
+
+type ScreenHandler struct {
+	Screen Screen
 }
 
 func (ths *ScreenHandler) Tick(delta int64) {
-	if ths.screen != nil {
-		ths.screen.Tick(delta)
 
-		if ths.child != nil {
-			ths.child.Tick(delta)
+	if ths.Screen != nil {
+		s := ths.Screen
+		for {
+			s.Tick(delta)
+			if s.Child() != nil {
+				s = s.Child()
+				continue
+			}
+			break
 		}
 	}
 }
 
 func (ths *ScreenHandler) Render(delta int64, window *pixelgl.Window) {
-	if ths.screen != nil {
-		if !ths.screen.ShouldRenderBehind() {
-			window.Clear(color.White)
+	if ths.Screen != nil {
+		s := ths.Screen
+		for {
+			if !s.ShouldRenderBehind() {
+				window.Clear(color.White)
+			}
+			s.Render(delta, window)
+			if s.Child() != nil {
+				s = s.Child()
+				continue
+			}
+			break
 		}
-		if ths.child == nil || ths.child.shouldRenderAbove() {
-			ths.screen.Render(delta, window)
-		}
 	}
-}
-
-func (ths *ScreenHandler) shouldRenderAbove() bool {
-	if ths.screen == nil {
-		return true
-	}
-	if !ths.screen.ShouldRenderBehind() || (ths.child != nil && !ths.child.shouldRenderAbove()) {
-		return false
-	}
-	return true
 }
 
 func (ths *ScreenHandler) Input(key utils.KEY) {
-	if ths.screen != nil {
-		if ths.child != nil {
-			ths.child.Input(key)
-		} else {
-			ths.screen.HandleKey(key)
+	if ths.Screen != nil {
+		s := ths.Screen
+		for {
+			if s.Child() != nil {
+				s = s.Child()
+				continue
+			}
+			s.HandleKey(key)
+			break
 		}
 	}
 }

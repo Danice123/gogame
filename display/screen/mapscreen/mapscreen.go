@@ -4,6 +4,7 @@ import (
 	"image/color"
 
 	displayEntity "github.com/Danice123/idk/display/entity"
+	"github.com/Danice123/idk/display/screen"
 	"github.com/Danice123/idk/display/tiledmap"
 	"github.com/Danice123/idk/display/utils"
 	"github.com/Danice123/idk/logic"
@@ -17,6 +18,8 @@ type MapScreen struct {
 	entityHandler *displayEntity.EntityHandler
 	player        *entity.Player
 	mapCanvas     *pixelgl.Canvas
+
+	screen.BaseScreen
 }
 
 func New(tMap *tiledmap.OrthoMap, entities []entity.Entity, player *entity.Player) *MapScreen {
@@ -65,7 +68,7 @@ func (ths *MapScreen) Render(delta int64, window *pixelgl.Window) {
 }
 
 func (ths *MapScreen) isValidDestination(coord logic.Coord) bool {
-	if ths.entityHandler.IsEntityAtTile(coord) {
+	if ths.entityHandler.EntityAtTile(coord) != nil {
 		return false
 	}
 	if ths.tMap.IsTileAt(coord.X, coord.Y, coord.Layer) {
@@ -99,6 +102,10 @@ func (ths *MapScreen) HandleKey(key utils.KEY) {
 			ths.player.Walk(logic.EAST)
 		} else {
 			ths.player.Face(logic.EAST)
+		}
+	case utils.ACTIVATE:
+		if entity := ths.entityHandler.EntityAtTile(ths.player.Coord.Translate(ths.player.Facing)); entity != nil {
+			entity.Activate(ths, ths.player)
 		}
 	}
 }

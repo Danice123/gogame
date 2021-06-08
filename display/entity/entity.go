@@ -27,16 +27,16 @@ func (ths *EntityHandler) AddEntity(added entity.Entity) {
 	}
 }
 
-func (ths *EntityHandler) IsEntityAtTile(coord logic.Coord) bool {
+func (ths *EntityHandler) EntityAtTile(coord logic.Coord) entity.Entity {
 	for _, entity := range ths.entities {
 		if coord == entity.GetCoord() {
-			return true
+			return entity
 		}
 		if entity.Translation() != nil && coord == entity.GetCoord().Translate(entity.Translation().Direction) {
-			return true
+			return entity
 		}
 	}
-	return false
+	return nil
 }
 
 func (ths *EntityHandler) Render(canvas *pixelgl.Canvas, tileSize int, tileRatio float64, layer int) {
