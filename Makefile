@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := default
-.PHONY: deps tidy fmt vet test bindata build
-default: deps tidy fmt vet test bindata build dist
+.PHONY: clean deps tidy fmt vet test build
+default: clean deps tidy fmt vet test build dist
 
 deps:
 	go get -u github.com/go-bindata/go-bindata/...
@@ -20,11 +20,10 @@ test:
 
 pkg/data/bindata.go:
 	@mkdir -p pkg/data
-	go-bindata -o pkg/data/bindata.go -pkg data data/...
+	go-bindata -nomemcopy -prefix data/ -o pkg/data/bindata.go -pkg data data/...
 
-bindata: pkg/data/bindata.go
-
-build: bindata
+build:
+	@rm pkg/data/bindata.go && $(MAKE) pkg/data/bindata.go
 	@mkdir -p dist
 	go build -o dist/ ./...
 
@@ -39,6 +38,5 @@ run: dist/game
 	./dist/game
 
 clean:
-	rm -rf pkg/data
-	rm -rf dist
+	rm -rf dist dist.zip
 
