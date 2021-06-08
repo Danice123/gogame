@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := default
-.PHONY: deps tidy fmt vet test build
-default: deps tidy fmt vet test build dist
+.PHONY: deps tidy fmt vet test bindata build
+default: deps tidy fmt vet test bindata build dist
 
 deps:
 	go get -u github.com/go-bindata/go-bindata/...
@@ -18,7 +18,12 @@ vet:
 test:
 	go test ./... | grep -v 'no test files' || :
 
-build:
+cmd/game/bindata.go:
+	go-bindata -o cmd/game/bindata.go data/...
+
+bindata: cmd/game/bindata.go
+
+build: bindata
 	mkdir -p dist
 	go build -o dist/ ./...
 
