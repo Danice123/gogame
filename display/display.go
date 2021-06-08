@@ -49,14 +49,11 @@ func (ths *Display) Tick(delta int64) {
 
 	if ths.window.Pressed(pixelgl.KeyUp) {
 		ths.screen.Input(utils.UP)
-	}
-	if ths.window.Pressed(pixelgl.KeyDown) {
+	} else if ths.window.Pressed(pixelgl.KeyDown) {
 		ths.screen.Input(utils.DOWN)
-	}
-	if ths.window.Pressed(pixelgl.KeyLeft) {
+	} else if ths.window.Pressed(pixelgl.KeyLeft) {
 		ths.screen.Input(utils.LEFT)
-	}
-	if ths.window.Pressed(pixelgl.KeyRight) {
+	} else if ths.window.Pressed(pixelgl.KeyRight) {
 		ths.screen.Input(utils.RIGHT)
 	}
 }
