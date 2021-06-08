@@ -44,3 +44,11 @@ func (ths Coord) Translate(dir Direction) Coord {
 		panic("No direction given?")
 	}
 }
+
+func (ths Coord) ChangeLayer(amount int) Coord {
+	return Coord{
+		X:     ths.X,
+		Y:     ths.Y,
+		Layer: ths.Layer + amount,
+	}
+}

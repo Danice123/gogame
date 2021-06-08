@@ -40,7 +40,7 @@ func (ths *EntityHandler) Render(canvas *pixelgl.Canvas, tileSize int, layer int
 
 	for _, e := range ths.entities {
 		if e.GetCoord().Layer == layer {
-			matrix := pixel.IM.Moved(e.GetCoord().Vector().Scaled(float64(tileSize)).Add(pixel.V(float64(tileSize)/2, float64(tileSize)/2)))
+			matrix := pixel.IM.Moved(e.GetCoord().Vector().Scaled(float64(tileSize)).Add(pixel.V(float64(tileSize)/2, float64(tileSize)/2+4)))
 			if e.Translation() != nil {
 				matrix = matrix.Moved(e.Translation().Vector(tileSize))
 			}

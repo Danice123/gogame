@@ -16,7 +16,7 @@ func NewPlayer(spritesheet *texturepacker.SpriteSheet) *Player {
 			Coord: logic.Coord{
 				X:     4,
 				Y:     4,
-				Layer: 0,
+				Layer: 1,
 			},
 			Facing:      logic.SOUTH,
 			Spritesheet: spritesheet,

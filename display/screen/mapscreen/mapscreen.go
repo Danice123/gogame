@@ -44,15 +44,35 @@ func (ths *MapScreen) Render(delta int64, window *pixelgl.Window) {
 	}
 }
 
+func (ths *MapScreen) isValidDestination(coord logic.Coord) bool {
+	return !ths.TiledMap.IsTileAt(coord.X, coord.Y, coord.Layer)
+}
+
 func (ths *MapScreen) HandleKey(key utils.KEY) {
 	switch key {
 	case utils.UP:
-		ths.Player.Walk(logic.NORTH)
+		if ths.isValidDestination(ths.Player.Coord.Translate(logic.NORTH)) {
+			ths.Player.Walk(logic.NORTH)
+		} else {
+			ths.Player.Facing = logic.NORTH
+		}
 	case utils.DOWN:
-		ths.Player.Walk(logic.SOUTH)
+		if ths.isValidDestination(ths.Player.Coord.Translate(logic.SOUTH)) {
+			ths.Player.Walk(logic.SOUTH)
+		} else {
+			ths.Player.Facing = logic.SOUTH
+		}
 	case utils.LEFT:
-		ths.Player.Walk(logic.WEST)
+		if ths.isValidDestination(ths.Player.Coord.Translate(logic.WEST)) {
+			ths.Player.Walk(logic.WEST)
+		} else {
+			ths.Player.Facing = logic.WEST
+		}
 	case utils.RIGHT:
-		ths.Player.Walk(logic.EAST)
+		if ths.isValidDestination(ths.Player.Coord.Translate(logic.EAST)) {
+			ths.Player.Walk(logic.EAST)
+		} else {
+			ths.Player.Facing = logic.EAST
+		}
 	}
 }

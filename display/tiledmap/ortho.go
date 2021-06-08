@@ -48,6 +48,11 @@ func (ths *OrthoMap) NumLayers() int {
 	return len(ths.tiledMap.Layers)
 }
 
+func (ths *OrthoMap) IsTileAt(x, y, layer int) bool {
+	tileId := y*ths.tiledMap.Width + x
+	return !ths.tiledMap.Layers[layer].Tiles[tileId].IsNil()
+}
+
 func (ths *OrthoMap) RenderBackground(window *pixelgl.Window) {
 	if ths.tiledMap.BackgroundColor != nil {
 		window.Clear(ths.tiledMap.BackgroundColor)
