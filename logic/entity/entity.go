@@ -46,9 +46,28 @@ func (ths *Base) Translation() *Translation {
 func (ths *Base) Tick() {
 	if ths.translation != nil {
 		ths.translation.Completed += 3 * tps
+
+		if int(ths.translation.Completed*100)%25 == 0 {
+			if ths.Frame == len(ths.Spritesheet.Sprites[ths.Name][string(ths.Facing)])-1 {
+				ths.Frame = 0
+			} else {
+				ths.Frame++
+			}
+		}
+
 		if ths.translation.Completed >= 1.0 {
 			ths.Coord = ths.Coord.Translate(ths.translation.Direction)
 			ths.translation = nil
+			ths.Frame = 0
+		}
+	}
+}
+
+func (ths *Base) Walk(dir logic.Direction) {
+	if ths.translation == nil {
+		ths.Facing = dir
+		ths.translation = &Translation{
+			Direction: dir,
 		}
 	}
 }

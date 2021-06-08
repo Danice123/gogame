@@ -47,16 +47,16 @@ func (ths *Display) ChangeScreen(screen screen.Screen) {
 func (ths *Display) Tick(delta int64) {
 	ths.screen.Tick(delta)
 
-	if ths.window.JustPressed(pixelgl.KeyUp) {
+	if ths.window.Pressed(pixelgl.KeyUp) {
 		ths.screen.Input(utils.UP)
 	}
-	if ths.window.JustPressed(pixelgl.KeyDown) {
+	if ths.window.Pressed(pixelgl.KeyDown) {
 		ths.screen.Input(utils.DOWN)
 	}
-	if ths.window.JustPressed(pixelgl.KeyLeft) {
+	if ths.window.Pressed(pixelgl.KeyLeft) {
 		ths.screen.Input(utils.LEFT)
 	}
-	if ths.window.JustPressed(pixelgl.KeyRight) {
+	if ths.window.Pressed(pixelgl.KeyRight) {
 		ths.screen.Input(utils.RIGHT)
 	}
 }

@@ -25,10 +25,3 @@ func NewPlayer(spritesheet *texturepacker.SpriteSheet) *Player {
 
 	return player
 }
-
-func (ths *Player) Walk(dir logic.Direction) {
-	ths.Facing = dir
-	ths.translation = &Translation{
-		Direction: dir,
-	}
-}
