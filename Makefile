@@ -36,7 +36,7 @@ dist:
 	zip -r dist.zip dist
 
 run: dist/game
-	(cd dist && ./game) # Need to bindata the files to remove cd
+	./dist/game
 
 clean:
 	rm -rf pkg/data
