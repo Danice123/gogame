@@ -5,6 +5,7 @@ import (
 	"image/color"
 
 	"github.com/Danice123/idk/pkg/data"
+	"github.com/Danice123/idk/pkg/display/utils"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/lafriks/go-tiled"
@@ -23,7 +24,7 @@ func NewOrthoMap(path string) *OrthoMap {
 		panic(err)
 	}
 
-	loadedMap, err := tiled.LoadFromReader("", bytes.NewReader(bs))
+	loadedMap, err := tiled.LoadFromReader(utils.FindPath("data/maps"), bytes.NewReader(bs))
 	if err != nil {
 		panic(err)
 	}

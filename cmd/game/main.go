@@ -25,10 +25,10 @@ type Game struct {
 }
 
 func (ths *Game) Start() {
-	ss := texturepacker.NewSpriteSheet("data/sheets/Entity.json")
+	ss := texturepacker.NewSpriteSheet("sheets/Entity.json")
 	ths.player = entity.NewPlayer(ss)
 
-	tmap := tiledmap.NewOrthoMap("data/maps/ortho.tmx")
+	tmap := tiledmap.NewOrthoMap("maps/ortho.tmx")
 	mapscrn := &mapscreen.MapScreen{
 		TiledMap:      tmap,
 		EntityHandler: &displayEntity.EntityHandler{},

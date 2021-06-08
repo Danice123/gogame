@@ -65,7 +65,7 @@ func NewSpriteSheet(path string) *SpriteSheet {
 	sheet := &SpriteSheet{
 		Name: data.Meta.Image,
 	}
-	image := utils.LoadPicture("data/sheets/" + data.Meta.Image)
+	image := utils.LoadPicture("sheets/" + data.Meta.Image)
 	sheet.Batch = pixel.NewBatch(&pixel.TrianglesData{}, image)
 	sheet.Sprites = make(map[string]map[string]map[int]*pixel.Sprite)
 

@@ -14,7 +14,7 @@ type TiledSet struct {
 }
 
 func NewTiledSet(tileset *tiled.Tileset) *TiledSet {
-	tilesetSource := utils.LoadPicture(tileset.GetFileFullPath(tileset.Image.Source)) // TODO: Handle tilesets with multiple images
+	tilesetSource := utils.LoadPicture("maps/tilesets/" + tileset.Image.Source) // TODO: Handle tilesets with multiple images
 
 	tiledset := &TiledSet{
 		batch:     pixel.NewBatch(&pixel.TrianglesData{}, tilesetSource),
