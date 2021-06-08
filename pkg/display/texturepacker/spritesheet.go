@@ -53,13 +53,13 @@ type SpriteSheet struct {
 func NewSpriteSheet(path string) *SpriteSheet {
 	jsonData, err := data.Asset(path)
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 
 	data := &PackedTextures{}
 	err = json.Unmarshal(jsonData, data)
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 
 	sheet := &SpriteSheet{
