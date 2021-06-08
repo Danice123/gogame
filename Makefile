@@ -18,13 +18,14 @@ vet:
 test:
 	go test ./... | grep -v 'no test files' || :
 
-cmd/game/bindata.go:
-	go-bindata -o cmd/game/bindata.go data/...
+pkg/data/bindata.go:
+	@mkdir -p pkg/data
+	go-bindata -o pkg/data/bindata.go -pkg data data/...
 
-bindata: cmd/game/bindata.go
+bindata: pkg/data/bindata.go
 
 build: bindata
-	mkdir -p dist
+	@mkdir -p dist
 	go build -o dist/ ./...
 
 dist/game: build
@@ -38,5 +39,6 @@ run: dist/game
 	(cd dist && ./game) # Need to bindata the files to remove cd
 
 clean:
+	rm -rf pkg/data
 	rm -rf dist
 
