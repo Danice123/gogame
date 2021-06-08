@@ -1,19 +1,19 @@
 package utils
 
 import (
+	"bytes"
 	"image"
 	_ "image/png"
-	"os"
 
+	"github.com/Danice123/idk/pkg/data"
 	"github.com/faiface/pixel"
 )
 
 func LoadPicture(path string) pixel.Picture {
-	if file, err := os.Open(path); err != nil {
+	if bs, err := data.Asset(path); err != nil {
 		panic(err)
 	} else {
-		defer file.Close()
-		if img, _, err := image.Decode(file); err != nil {
+		if img, _, err := image.Decode(bytes.NewReader(bs)); err != nil {
 			panic(err)
 		} else {
 			return pixel.PictureDataFromImage(img)

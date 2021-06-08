@@ -4,7 +4,6 @@ import (
 	"flag"
 	"log"
 	"os"
-	"path/filepath"
 	"runtime/pprof"
 	"time"
 
@@ -26,10 +25,10 @@ type Game struct {
 }
 
 func (ths *Game) Start() {
-	ss := texturepacker.NewSpriteSheet(filepath.Join("sheets", "Entity.json"))
+	ss := texturepacker.NewSpriteSheet("data/sheets/Entity.json")
 	ths.player = entity.NewPlayer(ss)
 
-	tmap := tiledmap.NewOrthoMap(filepath.Join("maps", "ortho.tmx"))
+	tmap := tiledmap.NewOrthoMap("data/maps/ortho.tmx")
 	mapscrn := &mapscreen.MapScreen{
 		TiledMap:      tmap,
 		EntityHandler: &displayEntity.EntityHandler{},

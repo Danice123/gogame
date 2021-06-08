@@ -31,8 +31,8 @@ build: bindata
 dist/game: build
 
 dist:
-	cp -R pkg/sheets dist
-	cp -R pkg/maps dist
+	@#cp -R pkg/sheets dist
+	@#cp -R pkg/maps dist
 	zip -r dist.zip dist
 
 run: dist/game

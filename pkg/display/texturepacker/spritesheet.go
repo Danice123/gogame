@@ -2,11 +2,10 @@ package texturepacker
 
 import (
 	"encoding/json"
-	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 
+	"github.com/Danice123/idk/pkg/data"
 	"github.com/Danice123/idk/pkg/display/utils"
 	"github.com/faiface/pixel"
 )
@@ -52,7 +51,7 @@ type SpriteSheet struct {
 }
 
 func NewSpriteSheet(path string) *SpriteSheet {
-	jsonData, err := os.ReadFile(path)
+	jsonData, err := data.Asset(path)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -66,7 +65,7 @@ func NewSpriteSheet(path string) *SpriteSheet {
 	sheet := &SpriteSheet{
 		Name: data.Meta.Image,
 	}
-	image := utils.LoadPicture(filepath.Join(filepath.Dir(path), data.Meta.Image))
+	image := utils.LoadPicture(data.Meta.Image)
 	sheet.Batch = pixel.NewBatch(&pixel.TrianglesData{}, image)
 	sheet.Sprites = make(map[string]map[string]map[int]*pixel.Sprite)
 

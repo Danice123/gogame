@@ -1,8 +1,10 @@
 package tiledmap
 
 import (
+	"bytes"
 	"image/color"
 
+	"github.com/Danice123/idk/pkg/data"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/lafriks/go-tiled"
@@ -16,7 +18,12 @@ type OrthoMap struct {
 }
 
 func NewOrthoMap(path string) *OrthoMap {
-	loadedMap, err := tiled.LoadFromFile(path)
+	bs, err := data.Asset(path)
+	if err != nil {
+		panic(err)
+	}
+
+	loadedMap, err := tiled.LoadFromReader("", bytes.NewReader(bs))
 	if err != nil {
 		panic(err)
 	}
