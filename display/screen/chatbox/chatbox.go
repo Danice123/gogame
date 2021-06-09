@@ -12,17 +12,20 @@ import (
 type ChatBox struct {
 	Finished chan bool
 
-	textContent string
+	textContent *menutils.Text
 	content     menutils.Content
-	font        *text.Atlas
 
 	screen.BaseScreen
 }
 
 func New(content string) *ChatBox {
+	font := text.NewAtlas(basicfont.Face7x13, text.ASCII)
+	t := menutils.NewTextContent(font)
+	t.Scale = 5
+	t.SetText(content, true)
+
 	return &ChatBox{
-		textContent: content,
-		font:        text.NewAtlas(basicfont.Face7x13, text.ASCII),
+		textContent: t,
 		Finished:    make(chan bool),
 	}
 }
@@ -32,15 +35,11 @@ func (ths *ChatBox) ShouldRenderBehind() bool {
 }
 
 func (ths *ChatBox) Tick(delta int64) {
-
+	ths.textContent.Tick(delta)
 }
 
 func (ths *ChatBox) Render(delta int64, window *pixelgl.Window) {
 	if ths.content == nil {
-		t := menutils.NewTextContent(ths.font)
-		t.Scale = 5
-		t.SetText(ths.textContent)
-
 		ths.content = &menutils.BorderBox{
 			BorderSize: 10,
 			Fill:       true,
@@ -48,7 +47,7 @@ func (ths *ChatBox) Render(delta int64, window *pixelgl.Window) {
 				AlignTop:  true,
 				MinWidth:  window.Bounds().W() - 20,
 				MinHeight: window.Bounds().H()*0.25 - 20,
-				Content:   t,
+				Content:   ths.textContent,
 			},
 		}
 	}
@@ -57,10 +56,15 @@ func (ths *ChatBox) Render(delta int64, window *pixelgl.Window) {
 }
 
 func (ths *ChatBox) HandleKey(key utils.KEY) {
+	println("Input")
 	switch key {
 	case utils.ACTIVATE:
 		fallthrough
 	case utils.DECLINE:
-		ths.Finished <- true
+		if ths.textContent.IsFinished() {
+			ths.Finished <- true
+		} else {
+			ths.textContent.Finish()
+		}
 	}
 }

@@ -31,11 +31,13 @@ func (ths *Game) LoadMap(mapName string) {
 
 func (ths *Game) Start() {
 	spf := 16666 * time.Microsecond
+	lastFrameTime := time.Now()
 	go func() {
 		for {
 			tickTimer := time.Now()
 
-			ths.display.Tick(0) // Update time?
+			ths.display.Tick(time.Since(lastFrameTime).Milliseconds())
+			lastFrameTime = time.Now()
 
 			sleepTime := spf - time.Since(tickTimer)
 			time.Sleep(sleepTime)

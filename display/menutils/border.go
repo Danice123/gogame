@@ -28,20 +28,20 @@ func (ths *BorderBox) Height() float64 {
 func (ths *BorderBox) Render(canvas *pixelgl.Canvas, x, y float64) {
 	if ths.draw == nil {
 		ths.draw = imdraw.New(nil)
-	}
 
-	if ths.Fill {
-		ths.draw.Color = color.White
+		if ths.Fill {
+			ths.draw.Color = color.White
+			ths.draw.Push(pixel.V(x+ths.BorderSize/2, y+ths.BorderSize/2))
+			ths.draw.Push(pixel.V(x+ths.Width()-ths.BorderSize/2, y+ths.Height()-ths.BorderSize/2))
+			ths.draw.Rectangle(0)
+		}
+
+		ths.draw.Color = color.Black
 		ths.draw.Push(pixel.V(x+ths.BorderSize/2, y+ths.BorderSize/2))
 		ths.draw.Push(pixel.V(x+ths.Width()-ths.BorderSize/2, y+ths.Height()-ths.BorderSize/2))
-		ths.draw.Rectangle(0)
+		ths.draw.Rectangle(ths.BorderSize)
 	}
 
-	ths.draw.Color = color.Black
-	ths.draw.Push(pixel.V(x+ths.BorderSize/2, y+ths.BorderSize/2))
-	ths.draw.Push(pixel.V(x+ths.Width()-ths.BorderSize/2, y+ths.Height()-ths.BorderSize/2))
-	ths.draw.Rectangle(ths.BorderSize)
 	ths.draw.Draw(canvas)
-
 	ths.Content.Render(canvas, x+ths.BorderSize, y+ths.BorderSize)
 }

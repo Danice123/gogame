@@ -88,7 +88,7 @@ func (ths *Base) Walk(dir logic.Direction) {
 
 func (ths *Base) Activate(screen screen.Screen, player *Player) {
 	go func() {
-		chat := chatbox.New("Test")
+		chat := chatbox.New("I'm a big boy with big boy powers!")
 		screen.SetChild(chat)
 		<-chat.Finished
 		screen.SetChild(nil)
