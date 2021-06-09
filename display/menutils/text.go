@@ -3,6 +3,7 @@ package menutils
 import (
 	"fmt"
 	"image/color"
+	"strings"
 
 	"github.com/Danice123/idk/display/utils"
 	"github.com/faiface/pixel"
@@ -69,12 +70,33 @@ func (ths *Text) Tick(delta int64) {
 	}
 }
 
+func (ths *Text) SetMaxWidth(maxWidth float64) {
+	if ths.renderer.BoundsOf(ths.content).W()*ths.Scale > maxWidth {
+		words := strings.Split(ths.content, " ")
+
+		newContent := ""
+		line := ""
+		for _, word := range words {
+			if ths.renderer.BoundsOf(line+word+" ").W()*ths.Scale > maxWidth {
+				newContent += line + "\n"
+				line = word + " "
+			} else {
+				line += word + " "
+			}
+		}
+		newContent += line
+		ths.content = newContent
+	}
+}
+
 func (ths *Text) Width() float64 {
-	return ths.renderer.BoundsOf(ths.content).W() * ths.Scale
+	b := ths.renderer.BoundsOf(ths.content)
+	return b.Resized(b.Min, pixel.V(ths.Scale, ths.Scale)).W()
 }
 
 func (ths *Text) Height() float64 {
-	return ths.renderer.BoundsOf(ths.content).H() * ths.Scale
+	b := ths.renderer.BoundsOf(ths.content)
+	return b.Resized(b.Min, pixel.V(ths.Scale, ths.Scale)).H()
 }
 
 func (ths *Text) Render(canvas *pixelgl.Canvas, x float64, y float64) {
@@ -82,5 +104,5 @@ func (ths *Text) Render(canvas *pixelgl.Canvas, x float64, y float64) {
 		ths.Scale = 1
 	}
 
-	ths.renderer.Draw(canvas, pixel.IM.Scaled(pixel.ZV, ths.Scale).Moved(pixel.V(x, y)))
+	ths.renderer.Draw(canvas, pixel.IM.Moved(pixel.V(x, y)).Scaled(pixel.V(x, y), ths.Scale))
 }

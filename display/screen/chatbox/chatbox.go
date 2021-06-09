@@ -40,14 +40,16 @@ func (ths *ChatBox) Tick(delta int64) {
 
 func (ths *ChatBox) Render(delta int64, window *pixelgl.Window) {
 	if ths.content == nil {
+		ths.textContent.SetMaxWidth(window.Bounds().W() - 20)
 		ths.content = &menutils.BorderBox{
 			BorderSize: 10,
 			Fill:       true,
 			Content: &menutils.ContentWithMargin{
-				AlignTop:  true,
-				MinWidth:  window.Bounds().W() - 20,
-				MinHeight: window.Bounds().H()*0.25 - 20,
-				Content:   ths.textContent,
+				AlignTop:   false,
+				LeftMargin: 4,
+				MinWidth:   window.Bounds().W() - 20,
+				MinHeight:  window.Bounds().H() * 0.25,
+				Content:    ths.textContent,
 			},
 		}
 	}
