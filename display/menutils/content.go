@@ -3,47 +3,60 @@ package menutils
 import "github.com/faiface/pixel/pixelgl"
 
 type Content interface {
-	Width() int
-	Height() int
-	Render(canvas pixelgl.Canvas, x, y int)
+	Width() float64
+	Height() float64
+	Render(canvas *pixelgl.Canvas, x, y float64)
 }
 
 type ContentWithMargin struct {
-	TopMargin    int
-	BottomMargin int
-	LeftMargin   int
-	RightMargin  int
-	Hidden       bool
-	AlignRight   bool
-	alignBottom  bool
+	TopMargin    float64
+	BottomMargin float64
+	LeftMargin   float64
+	RightMargin  float64
+
+	MinWidth  float64
+	MinHeight float64
+
+	AlignRight bool
+	AlignTop   bool
 
 	Content Content
 }
 
-func (ths *ContentWithMargin) Width() int {
-	return ths.LeftMargin + ths.Content.Width() + ths.RightMargin
-}
+func (ths *ContentWithMargin) Width() float64 {
+	width := ths.LeftMargin + ths.Content.Width() + ths.RightMargin
 
-func (ths *ContentWithMargin) Height() int {
-	return ths.TopMargin + ths.Content.Height() + ths.BottomMargin
-}
-
-func (ths *ContentWithMargin) Render(canvas pixelgl.Canvas, x, y int) {
-	if !ths.Hidden {
-		var rx int
-		if ths.AlignRight {
-			rx = x - ths.Width() + ths.RightMargin
-		} else {
-			rx = x + ths.LeftMargin
-		}
-
-		var ry int
-		if ths.alignBottom {
-			ry = y - ths.Height() + ths.BottomMargin
-		} else {
-			ry = y + ths.TopMargin
-		}
-
-		ths.Content.Render(canvas, rx, ry)
+	if ths.MinWidth > width {
+		return ths.MinWidth
+	} else {
+		return width
 	}
+}
+
+func (ths *ContentWithMargin) Height() float64 {
+	height := ths.TopMargin + ths.Content.Height() + ths.BottomMargin
+
+	if ths.MinHeight > height {
+		return ths.MinHeight
+	} else {
+		return height
+	}
+}
+
+func (ths *ContentWithMargin) Render(canvas *pixelgl.Canvas, x, y float64) {
+	var rx float64
+	if ths.AlignRight {
+		rx = x - ths.Width() + ths.RightMargin
+	} else {
+		rx = x + ths.LeftMargin
+	}
+
+	var ry float64
+	if ths.AlignTop {
+		ry = y + ths.Height() - ths.TopMargin - ths.Content.Height()
+	} else {
+		ry = y + ths.BottomMargin
+	}
+
+	ths.Content.Render(canvas, rx, ry)
 }

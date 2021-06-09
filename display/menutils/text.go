@@ -10,6 +10,8 @@ import (
 )
 
 type Text struct {
+	Scale float64
+
 	text *text.Text
 }
 
@@ -24,14 +26,18 @@ func (ths *Text) SetText(content string) {
 	fmt.Fprint(ths.text, content)
 }
 
-func (ths *Text) Width() int {
-	return int(ths.text.Bounds().W())
+func (ths *Text) Width() float64 {
+	return ths.text.Bounds().W() * ths.Scale
 }
 
-func (ths *Text) Height() int {
-	return int(ths.text.Bounds().H())
+func (ths *Text) Height() float64 {
+	return ths.text.Bounds().H() * ths.Scale
 }
 
-func (ths *Text) Render(canvas *pixelgl.Canvas, x int, y int) {
-	ths.text.Draw(canvas, pixel.IM.Scaled(pixel.ZV, 10).Moved(pixel.V(float64(x), float64(y))))
+func (ths *Text) Render(canvas *pixelgl.Canvas, x float64, y float64) {
+	if ths.Scale == 0 {
+		ths.Scale = 1
+	}
+
+	ths.text.Draw(canvas, pixel.IM.Scaled(pixel.ZV, ths.Scale).Moved(pixel.V(x, y)))
 }
