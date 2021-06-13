@@ -14,10 +14,11 @@ import (
 type Text struct {
 	Scale float64
 
-	renderer  *text.Text
-	timer     *utils.Timer
-	content   string
-	charIndex int
+	renderer          *text.Text
+	timer             *utils.Timer
+	content           string
+	charIndex         int
+	heightOfFirstLine float64
 }
 
 func NewTextContent(fontAtlas *text.Atlas) *Text {
@@ -76,10 +77,14 @@ func (ths *Text) SetMaxWidth(maxWidth float64) {
 
 		newContent := ""
 		line := ""
+		ths.heightOfFirstLine = 0
 		for _, word := range words {
 			if ths.renderer.BoundsOf(line+word+" ").W()*ths.Scale > maxWidth {
 				newContent += line + "\n"
 				line = word + " "
+				if ths.heightOfFirstLine == 0 {
+					ths.heightOfFirstLine = ths.renderer.BoundsOf(line).H() * ths.Scale
+				}
 			} else {
 				line += word + " "
 			}
@@ -104,5 +109,7 @@ func (ths *Text) Render(canvas *pixelgl.Canvas, x float64, y float64) {
 		ths.Scale = 1
 	}
 
-	ths.renderer.Draw(canvas, pixel.IM.Moved(pixel.V(x, y)).Scaled(pixel.V(x, y), ths.Scale))
+	linefix := ths.Height() - ths.heightOfFirstLine
+
+	ths.renderer.Draw(canvas, pixel.IM.Moved(pixel.V(x, y)).Scaled(pixel.V(x, y), ths.Scale).Moved(pixel.V(0, linefix)))
 }

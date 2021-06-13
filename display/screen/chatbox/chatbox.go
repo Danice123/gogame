@@ -45,10 +45,10 @@ func (ths *ChatBox) Render(delta int64, window *pixelgl.Window) {
 			BorderSize: 10,
 			Fill:       true,
 			Content: &menutils.ContentWithMargin{
-				AlignTop:   false,
+				AlignTop:   true,
 				LeftMargin: 4,
 				MinWidth:   window.Bounds().W() - 20,
-				MinHeight:  window.Bounds().H() * 0.25,
+				MinHeight:  window.Bounds().H() * 0.22,
 				Content:    ths.textContent,
 			},
 		}
