@@ -13,6 +13,7 @@ type EntityData struct {
 	Name   string
 	Coord  logic.Coord
 	Facing logic.Direction
+	Script string
 }
 
 type EntityMapData struct {
@@ -38,6 +39,7 @@ func (ths *EntityMapData) Build(spritesheet *texturepacker.SpriteSheet) []Entity
 			EntityName: data.Name,
 			Coord:      data.Coord,
 			Facing:     data.Facing,
+			script:     data.Script,
 
 			Spritesheet: spritesheet,
 		})

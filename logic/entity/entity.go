@@ -2,10 +2,11 @@ package entity
 
 import (
 	"github.com/Danice123/idk/display/screen"
-	"github.com/Danice123/idk/display/screen/chatbox"
 	"github.com/Danice123/idk/display/texturepacker"
 	"github.com/Danice123/idk/logic"
+	"github.com/Danice123/idk/logic/entity/script"
 	"github.com/faiface/pixel"
+	lua "github.com/yuin/gopher-lua"
 )
 
 var tps = 1.0 / 60.0
@@ -26,6 +27,7 @@ type Base struct {
 
 	Frame       int
 	translation *Translation
+	script      string
 
 	// Tentative
 	Spritesheet *texturepacker.SpriteSheet
@@ -87,10 +89,18 @@ func (ths *Base) Walk(dir logic.Direction) {
 }
 
 func (ths *Base) Activate(screen screen.Screen, player *Player) {
+	sh := &script.ScriptHandler{
+		Screen: screen,
+		Player: player,
+	}
+
 	go func() {
-		chat := chatbox.New("I'm a big boy with big boy powers!")
-		screen.SetChild(chat)
-		<-chat.Finished
-		screen.SetChild(nil)
+		luaState := lua.NewState()
+		defer luaState.Close()
+		luaState.PreloadModule("game", sh.MakeLoaderFunction())
+		luaState.SetGlobal("Display", luaState.NewFunction(sh.Display))
+		if err := luaState.DoFile(ths.script); err != nil {
+			panic(err)
+		}
 	}()
 }

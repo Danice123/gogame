@@ -5,3 +5,4 @@ entities:
       y: 6
       layer: 1
     facing: South
+    script: maps/text.lua
