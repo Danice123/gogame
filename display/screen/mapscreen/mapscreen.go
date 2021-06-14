@@ -104,7 +104,7 @@ func (ths *MapScreen) HandleKey(key utils.KEY) {
 			ths.player.Face(logic.EAST)
 		}
 	case utils.ACTIVATE:
-		if entity := ths.entityHandler.EntityAtTile(ths.player.Coord.Translate(ths.player.Facing)); entity != nil {
+		if entity := ths.entityHandler.EntityAtTile(ths.player.Coord.Translate(ths.player.GetFacing())); entity != nil {
 			entity.Activate(ths, ths.player)
 		}
 	}

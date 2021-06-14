@@ -38,7 +38,7 @@ func (ths *EntityMapData) Build(spritesheet *texturepacker.SpriteSheet) []Entity
 		entities = append(entities, &Base{
 			EntityName: data.Name,
 			Coord:      data.Coord,
-			Facing:     data.Facing,
+			facing:     data.Facing,
 			script:     data.Script,
 
 			Spritesheet: spritesheet,

@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"math"
+
 	"github.com/Danice123/idk/display/screen"
 	"github.com/Danice123/idk/display/texturepacker"
 	"github.com/Danice123/idk/logic"
@@ -23,9 +25,9 @@ type Entity interface {
 type Base struct {
 	EntityName string
 	Coord      logic.Coord
-	Facing     logic.Direction
+	Frame      int
 
-	Frame       int
+	facing      logic.Direction
 	translation *Translation
 	script      string
 
@@ -42,7 +44,7 @@ func (ths *Base) SpriteSheet() *texturepacker.SpriteSheet {
 }
 
 func (ths *Base) Sprite() *pixel.Sprite {
-	return ths.Spritesheet.Sprites[ths.EntityName][string(ths.Facing)][ths.Frame]
+	return ths.Spritesheet.Sprites[ths.EntityName][string(ths.facing)][ths.Frame]
 }
 
 func (ths *Base) GetCoord() logic.Coord {
@@ -58,7 +60,7 @@ func (ths *Base) Tick() {
 		ths.translation.Completed += 3 * tps
 
 		if int(ths.translation.Completed*100)%25 == 0 {
-			if ths.Frame == len(ths.Spritesheet.Sprites[ths.EntityName][string(ths.Facing)])-1 {
+			if ths.Frame == len(ths.Spritesheet.Sprites[ths.EntityName][string(ths.facing)])-1 {
 				ths.Frame = 0
 			} else {
 				ths.Frame++
@@ -73,15 +75,40 @@ func (ths *Base) Tick() {
 	}
 }
 
+func (ths *Base) GetFacing() logic.Direction {
+	return ths.facing
+}
+
 func (ths *Base) Face(dir logic.Direction) {
 	if ths.translation == nil {
-		ths.Facing = dir
+		ths.facing = dir
+	}
+}
+
+func (ths *Base) FaceTowards(coord logic.Coord) {
+	if ths.translation == nil {
+		dx := ths.Coord.X - coord.X
+		dy := ths.Coord.Y - coord.Y
+
+		if math.Abs(float64(dx)) > math.Abs(float64(dy)) {
+			if dx > 0 {
+				ths.facing = logic.WEST
+			} else {
+				ths.facing = logic.EAST
+			}
+		} else {
+			if dy > 0 {
+				ths.facing = logic.SOUTH
+			} else {
+				ths.facing = logic.NORTH
+			}
+		}
 	}
 }
 
 func (ths *Base) Walk(dir logic.Direction) {
 	if ths.translation == nil {
-		ths.Facing = dir
+		ths.facing = dir
 		ths.translation = &Translation{
 			Direction: dir,
 		}
@@ -91,14 +118,20 @@ func (ths *Base) Walk(dir logic.Direction) {
 func (ths *Base) Activate(screen screen.Screen, player *Player) {
 	sh := &script.ScriptHandler{
 		Screen: screen,
-		Player: player,
+	}
+	eh := &script.EntityHandler{
+		Entity: ths,
+	}
+	ph := &script.EntityHandler{
+		Entity: player,
 	}
 
 	go func() {
 		luaState := lua.NewState()
 		defer luaState.Close()
 		luaState.PreloadModule("game", sh.MakeLoaderFunction())
-		luaState.SetGlobal("Display", luaState.NewFunction(sh.Display))
+		luaState.PreloadModule("self", eh.MakeLoaderFunction())
+		luaState.PreloadModule("player", ph.MakeLoaderFunction())
 		if err := luaState.DoFile(ths.script); err != nil {
 			panic(err)
 		}
