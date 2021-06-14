@@ -39,6 +39,12 @@ func (ths *EntityHandler) EntityAtTile(coord logic.Coord) entity.Entity {
 	return nil
 }
 
+func (ths *EntityHandler) Tick() {
+	for _, entity := range ths.entities {
+		entity.Tick()
+	}
+}
+
 func (ths *EntityHandler) Render(canvas *pixelgl.Canvas, tileSize int, tileRatio float64, layer int) {
 	if ths.entities == nil {
 		return

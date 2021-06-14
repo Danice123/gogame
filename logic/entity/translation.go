@@ -8,6 +8,7 @@ import (
 type Translation struct {
 	Direction logic.Direction
 	Completed float64
+	Signal    chan bool
 }
 
 func (ths *Translation) Vector(scaledTileSize float64) pixel.Vec {

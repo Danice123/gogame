@@ -26,6 +26,7 @@ type Entity interface {
 	GetFacing() logic.Direction
 	Face(logic.Direction)
 	FaceTowards(logic.Coord)
+	Walk(logic.Direction) chan bool
 }
 
 type EntityHandler struct {
@@ -39,6 +40,7 @@ func (ths *EntityHandler) MakeLoaderFunction() func(*lua.LState) int {
 			"GetFacing":   ths.GetFacing,
 			"Face":        ths.Face,
 			"FaceTowards": ths.FaceTowards,
+			"Walk":        ths.Walk,
 		}
 		mod := luaState.SetFuncs(luaState.NewTable(), exports)
 		luaState.Push(mod)

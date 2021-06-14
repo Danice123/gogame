@@ -20,6 +20,7 @@ type Entity interface {
 	GetCoord() logic.Coord
 	Translation() *Translation
 	Activate(screen screen.Screen, player *Player)
+	Tick()
 }
 
 type Base struct {
@@ -68,6 +69,10 @@ func (ths *Base) Tick() {
 		}
 
 		if ths.translation.Completed >= 1.0 {
+			select {
+			case ths.translation.Signal <- true:
+			default:
+			}
 			ths.Coord = ths.Coord.Translate(ths.translation.Direction)
 			ths.translation = nil
 			ths.Frame = 0
@@ -106,13 +111,16 @@ func (ths *Base) FaceTowards(coord logic.Coord) {
 	}
 }
 
-func (ths *Base) Walk(dir logic.Direction) {
+func (ths *Base) Walk(dir logic.Direction) chan bool {
 	if ths.translation == nil {
 		ths.facing = dir
 		ths.translation = &Translation{
 			Direction: dir,
+			Signal:    make(chan bool),
 		}
+		return ths.translation.Signal
 	}
+	return nil
 }
 
 func (ths *Base) Activate(screen screen.Screen, player *Player) {
@@ -127,6 +135,7 @@ func (ths *Base) Activate(screen screen.Screen, player *Player) {
 	}
 
 	go func() {
+		player.Locked = true
 		luaState := lua.NewState()
 		defer luaState.Close()
 		luaState.PreloadModule("game", sh.MakeLoaderFunction())
@@ -135,5 +144,6 @@ func (ths *Base) Activate(screen screen.Screen, player *Player) {
 		if err := luaState.DoFile(ths.script); err != nil {
 			panic(err)
 		}
+		player.Locked = false
 	}()
 }

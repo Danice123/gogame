@@ -6,6 +6,8 @@ import (
 )
 
 type Player struct {
+	Locked bool
+
 	Base
 }
 
