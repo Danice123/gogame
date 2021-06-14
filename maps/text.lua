@@ -1,3 +1,3 @@
 local game = require("game")
 
-game.display()
+game.display("I'm a big boy with big boy powers!")

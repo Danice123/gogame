@@ -58,7 +58,6 @@ func (ths *ChatBox) Render(delta int64, window *pixelgl.Window) {
 }
 
 func (ths *ChatBox) HandleKey(key utils.KEY) {
-	println("Input")
 	switch key {
 	case utils.ACTIVATE:
 		fallthrough

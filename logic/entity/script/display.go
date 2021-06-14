@@ -6,7 +6,9 @@ import (
 )
 
 func (ths *ScriptHandler) Display(l *lua.LState) int {
-	chat := chatbox.New("I'm a big boy with big boy powers!")
+	text := l.ToString(1)
+
+	chat := chatbox.New(text)
 	ths.Screen.SetChild(chat)
 	<-chat.Finished
 	ths.Screen.SetChild(nil)
