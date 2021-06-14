@@ -3,7 +3,7 @@ package script
 import (
 	"strings"
 
-	"github.com/Danice123/idk/logic"
+	"github.com/Danice123/gogame/logic"
 )
 
 func GetDirection(dir string) logic.Direction {

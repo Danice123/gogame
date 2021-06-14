@@ -4,11 +4,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/Danice123/idk/display"
-	"github.com/Danice123/idk/display/screen/mapscreen"
-	"github.com/Danice123/idk/display/texturepacker"
-	"github.com/Danice123/idk/display/tiledmap"
-	"github.com/Danice123/idk/logic/entity"
+	"github.com/Danice123/gogame/display"
+	"github.com/Danice123/gogame/display/screen/mapscreen"
+	"github.com/Danice123/gogame/display/texturepacker"
+	"github.com/Danice123/gogame/display/tiledmap"
+	"github.com/Danice123/gogame/logic/entity"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )

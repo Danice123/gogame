@@ -1,9 +1,9 @@
 package entity
 
 import (
-	"github.com/Danice123/idk/display/texturepacker"
-	"github.com/Danice123/idk/logic"
-	"github.com/Danice123/idk/logic/entity"
+	"github.com/Danice123/gogame/display/texturepacker"
+	"github.com/Danice123/gogame/logic"
+	"github.com/Danice123/gogame/logic/entity"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )

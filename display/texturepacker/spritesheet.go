@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Danice123/idk/display/utils"
+	"github.com/Danice123/gogame/display/utils"
 	"github.com/faiface/pixel"
 )
 

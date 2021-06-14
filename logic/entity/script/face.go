@@ -1,7 +1,7 @@
 package script
 
 import (
-	"github.com/Danice123/idk/logic"
+	"github.com/Danice123/gogame/logic"
 	lua "github.com/yuin/gopher-lua"
 )
 

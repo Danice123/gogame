@@ -1,8 +1,8 @@
 package entity
 
 import (
-	"github.com/Danice123/idk/display/texturepacker"
-	"github.com/Danice123/idk/logic"
+	"github.com/Danice123/gogame/display/texturepacker"
+	"github.com/Danice123/gogame/logic"
 )
 
 type Player struct {

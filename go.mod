@@ -1,4 +1,4 @@
-module github.com/Danice123/idk
+module github.com/Danice123/gogame
 
 go 1.16
 

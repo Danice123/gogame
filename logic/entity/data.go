@@ -4,8 +4,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Danice123/idk/display/texturepacker"
-	"github.com/Danice123/idk/logic"
+	"github.com/Danice123/gogame/display/texturepacker"
+	"github.com/Danice123/gogame/logic"
 	"gopkg.in/yaml.v3"
 )
 

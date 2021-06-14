@@ -1,7 +1,7 @@
 package script
 
 import (
-	"github.com/Danice123/idk/display/screen/chatbox"
+	"github.com/Danice123/gogame/display/screen/chatbox"
 	lua "github.com/yuin/gopher-lua"
 )
 

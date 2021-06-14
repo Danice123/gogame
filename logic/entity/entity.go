@@ -3,10 +3,10 @@ package entity
 import (
 	"math"
 
-	"github.com/Danice123/idk/display/screen"
-	"github.com/Danice123/idk/display/texturepacker"
-	"github.com/Danice123/idk/logic"
-	"github.com/Danice123/idk/logic/entity/script"
+	"github.com/Danice123/gogame/display/screen"
+	"github.com/Danice123/gogame/display/texturepacker"
+	"github.com/Danice123/gogame/logic"
+	"github.com/Danice123/gogame/logic/entity/script"
 	"github.com/faiface/pixel"
 	lua "github.com/yuin/gopher-lua"
 )

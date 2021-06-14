@@ -1,9 +1,9 @@
 package chatbox
 
 import (
-	"github.com/Danice123/idk/display/menutils"
-	"github.com/Danice123/idk/display/screen"
-	"github.com/Danice123/idk/display/utils"
+	"github.com/Danice123/gogame/display/menutils"
+	"github.com/Danice123/gogame/display/screen"
+	"github.com/Danice123/gogame/display/utils"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/font/basicfont"
