@@ -96,12 +96,12 @@ func (ths *Text) SetMaxWidth(maxWidth float64) {
 
 func (ths *Text) Width() float64 {
 	b := ths.renderer.BoundsOf(ths.content)
-	return b.Resized(b.Min, pixel.V(ths.Scale, ths.Scale)).W()
+	return b.W() * ths.Scale
 }
 
 func (ths *Text) Height() float64 {
 	b := ths.renderer.BoundsOf(ths.content)
-	return b.Resized(b.Min, pixel.V(ths.Scale, ths.Scale)).H()
+	return b.H() * ths.Scale
 }
 
 func (ths *Text) Render(canvas *pixelgl.Canvas, x float64, y float64) {
@@ -109,7 +109,9 @@ func (ths *Text) Render(canvas *pixelgl.Canvas, x float64, y float64) {
 		ths.Scale = 1
 	}
 
-	linefix := ths.Height() - ths.heightOfFirstLine
-
+	var linefix float64
+	if strings.Contains(ths.content, "\n") {
+		linefix = ths.Height() - ths.heightOfFirstLine
+	}
 	ths.renderer.Draw(canvas, pixel.IM.Moved(pixel.V(x, y)).Scaled(pixel.V(x, y), ths.Scale).Moved(pixel.V(0, linefix)))
 }
