@@ -14,6 +14,8 @@ type Display struct {
 	screen     *screen.ScreenHandler
 	frameTimer time.Time
 
+	debounce map[utils.KEY]bool
+
 	lastActivation time.Time
 }
 
@@ -24,8 +26,9 @@ func NewDisplay(cfg pixelgl.WindowConfig) *Display {
 	}
 
 	return &Display{
-		window: win,
-		screen: &screen.ScreenHandler{},
+		window:   win,
+		screen:   &screen.ScreenHandler{},
+		debounce: make(map[utils.KEY]bool),
 	}
 }
 
@@ -47,25 +50,46 @@ func (ths *Display) ChangeScreen(screen screen.Screen) {
 }
 
 func (ths *Display) Tick(delta int64) {
-	ths.screen.Tick(delta)
-
-	if time.Since(ths.lastActivation) > 500*time.Millisecond {
-		if ths.window.Pressed(pixelgl.KeyZ) {
-			ths.screen.Input(utils.ACTIVATE)
-			ths.lastActivation = time.Now()
-		} else if ths.window.Pressed(pixelgl.KeyX) {
-			ths.screen.Input(utils.DECLINE)
-			ths.lastActivation = time.Now()
+	var pressedFunc func(key utils.KEY) bool
+	if ths.window.JoystickPresent(pixelgl.Joystick1) {
+		pressedFunc = func(key utils.KEY) bool {
+			var keyMap pixelgl.GamepadButton
+			switch key {
+			case utils.ACTIVATE:
+				keyMap = pixelgl.ButtonB
+			case utils.DECLINE:
+				keyMap = pixelgl.ButtonA
+			case utils.UP:
+				keyMap = pixelgl.ButtonDpadUp
+			case utils.DOWN:
+				keyMap = pixelgl.ButtonDpadDown
+			case utils.LEFT:
+				keyMap = pixelgl.ButtonDpadLeft
+			case utils.RIGHT:
+				keyMap = pixelgl.ButtonDpadRight
+			}
+			return ths.window.JoystickPressed(pixelgl.Joystick1, keyMap)
+		}
+	} else {
+		pressedFunc = func(key utils.KEY) bool {
+			var keyMap pixelgl.Button
+			switch key {
+			case utils.ACTIVATE:
+				keyMap = pixelgl.KeyZ
+			case utils.DECLINE:
+				keyMap = pixelgl.KeyX
+			case utils.UP:
+				keyMap = pixelgl.KeyUp
+			case utils.DOWN:
+				keyMap = pixelgl.KeyDown
+			case utils.LEFT:
+				keyMap = pixelgl.KeyLeft
+			case utils.RIGHT:
+				keyMap = pixelgl.KeyRight
+			}
+			return ths.window.Pressed(keyMap)
 		}
 	}
-
-	if ths.window.Pressed(pixelgl.KeyUp) {
-		ths.screen.Input(utils.UP)
-	} else if ths.window.Pressed(pixelgl.KeyDown) {
-		ths.screen.Input(utils.DOWN)
-	} else if ths.window.Pressed(pixelgl.KeyLeft) {
-		ths.screen.Input(utils.LEFT)
-	} else if ths.window.Pressed(pixelgl.KeyRight) {
-		ths.screen.Input(utils.RIGHT)
-	}
+	ths.screen.Input(pressedFunc)
+	ths.screen.Tick(delta)
 }

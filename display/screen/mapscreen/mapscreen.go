@@ -77,37 +77,37 @@ func (ths *MapScreen) isValidDestination(coord logic.Coord) bool {
 	return true
 }
 
-func (ths *MapScreen) HandleKey(key utils.KEY) {
-	if !ths.player.Locked {
-		switch key {
-		case utils.UP:
-			if ths.isValidDestination(ths.player.Coord.Translate(logic.NORTH)) {
-				ths.player.Walk(logic.NORTH)
-			} else {
-				ths.player.Face(logic.NORTH)
-			}
-		case utils.DOWN:
-			if ths.isValidDestination(ths.player.Coord.Translate(logic.SOUTH)) {
-				ths.player.Walk(logic.SOUTH)
-			} else {
-				ths.player.Face(logic.SOUTH)
-			}
-		case utils.LEFT:
-			if ths.isValidDestination(ths.player.Coord.Translate(logic.WEST)) {
-				ths.player.Walk(logic.WEST)
-			} else {
-				ths.player.Face(logic.WEST)
-			}
-		case utils.RIGHT:
-			if ths.isValidDestination(ths.player.Coord.Translate(logic.EAST)) {
-				ths.player.Walk(logic.EAST)
-			} else {
-				ths.player.Face(logic.EAST)
-			}
-		case utils.ACTIVATE:
-			if entity := ths.entityHandler.EntityAtTile(ths.player.Coord.Translate(ths.player.GetFacing())); entity != nil {
-				entity.Activate(ths, ths.player)
-			}
-		}
-	}
+func (ths *MapScreen) HandleKey(pressed func(utils.KEY) bool) {
+	// if !ths.player.Locked {
+	// 	switch key {
+	// 	case utils.UP:
+	// 		if ths.isValidDestination(ths.player.Coord.Translate(logic.NORTH)) {
+	// 			ths.player.Walk(logic.NORTH)
+	// 		} else {
+	// 			ths.player.Face(logic.NORTH)
+	// 		}
+	// 	case utils.DOWN:
+	// 		if ths.isValidDestination(ths.player.Coord.Translate(logic.SOUTH)) {
+	// 			ths.player.Walk(logic.SOUTH)
+	// 		} else {
+	// 			ths.player.Face(logic.SOUTH)
+	// 		}
+	// 	case utils.LEFT:
+	// 		if ths.isValidDestination(ths.player.Coord.Translate(logic.WEST)) {
+	// 			ths.player.Walk(logic.WEST)
+	// 		} else {
+	// 			ths.player.Face(logic.WEST)
+	// 		}
+	// 	case utils.RIGHT:
+	// 		if ths.isValidDestination(ths.player.Coord.Translate(logic.EAST)) {
+	// 			ths.player.Walk(logic.EAST)
+	// 		} else {
+	// 			ths.player.Face(logic.EAST)
+	// 		}
+	// 	case utils.ACTIVATE:
+	// 		if entity := ths.entityHandler.EntityAtTile(ths.player.Coord.Translate(ths.player.GetFacing())); entity != nil {
+	// 			entity.Activate(ths, ths.player)
+	// 		}
+	// 	}
+	// }
 }

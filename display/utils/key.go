@@ -2,10 +2,11 @@ package utils
 
 type KEY string
 
-var UP = KEY("UP")
-var DOWN = KEY("DOWN")
-var LEFT = KEY("LEFT")
-var RIGHT = KEY("RIGHT")
+const NILKEY = KEY("")
+const UP = KEY("UP")
+const DOWN = KEY("DOWN")
+const LEFT = KEY("LEFT")
+const RIGHT = KEY("RIGHT")
 
-var ACTIVATE = KEY("ACTIVATE")
-var DECLINE = KEY("DECLINE")
+const ACTIVATE = KEY("ACTIVATE")
+const DECLINE = KEY("DECLINE")

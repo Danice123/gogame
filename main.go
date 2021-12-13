@@ -1,36 +1,20 @@
 package main
 
 import (
-	"path/filepath"
 	"time"
 
 	"github.com/Danice123/gogame/display"
-	"github.com/Danice123/gogame/display/screen/mapscreen"
-	"github.com/Danice123/gogame/display/texturepacker"
-	"github.com/Danice123/gogame/display/tiledmap"
-	"github.com/Danice123/gogame/logic/entity"
+	"github.com/Danice123/gogame/display/netbattle"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )
 
 type Game struct {
 	display *display.Display
-	player  *entity.Player
-
-	entitySprites *texturepacker.SpriteSheet
-}
-
-func (ths *Game) LoadMap(mapName string) {
-	tmap := tiledmap.NewOrthoMap(filepath.Join("maps", mapName+".tmx"))
-	entityData := entity.LoadEntityMapData(mapName)
-	entities := entityData.Build(ths.entitySprites)
-
-	mapscrn := mapscreen.New(tmap, entities, ths.player)
-	ths.display.ChangeScreen(mapscrn)
 }
 
 func (ths *Game) Start() {
-	spf := 16666 * time.Microsecond
+	spf := 16666 * time.Microsecond // 60fps
 	lastFrameTime := time.Now()
 	go func() {
 		for {
@@ -46,19 +30,17 @@ func (ths *Game) Start() {
 }
 
 func run() {
-	ss := texturepacker.NewSpriteSheet(filepath.Join("sheets", "Entity.json"))
-
 	game := Game{
 		display: display.NewDisplay(pixelgl.WindowConfig{
 			Title:  "Some Game",
 			Bounds: pixel.R(0, 0, 1024, 768),
 			VSync:  true,
 		}),
-		entitySprites: ss,
-		player:        entity.NewPlayer(ss),
 	}
 
-	game.LoadMap("ortho")
+	nb := netbattle.NewNetBattleScreen()
+
+	game.display.ChangeScreen(nb)
 	game.Start()
 	game.display.StartRenderLoop()
 }

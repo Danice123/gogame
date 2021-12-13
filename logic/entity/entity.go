@@ -45,7 +45,7 @@ func (ths *Base) SpriteSheet() *texturepacker.SpriteSheet {
 }
 
 func (ths *Base) Sprite() *pixel.Sprite {
-	return ths.Spritesheet.Sprites[ths.EntityName][string(ths.facing)][ths.Frame]
+	return ths.Spritesheet.Sprites[ths.EntityName][ths.Frame] // [string(ths.facing)]
 }
 
 func (ths *Base) GetCoord() logic.Coord {
@@ -60,13 +60,13 @@ func (ths *Base) Tick() {
 	if ths.translation != nil {
 		ths.translation.Completed += 3 * tps
 
-		if int(ths.translation.Completed*100)%25 == 0 {
-			if ths.Frame == len(ths.Spritesheet.Sprites[ths.EntityName][string(ths.facing)])-1 {
-				ths.Frame = 0
-			} else {
-				ths.Frame++
-			}
-		}
+		// if int(ths.translation.Completed*100)%25 == 0 {
+		// 	if ths.Frame == len(ths.Spritesheet.Sprites[ths.EntityName][string(ths.facing)])-1 {
+		// 		ths.Frame = 0
+		// 	} else {
+		// 		ths.Frame++
+		// 	}
+		// }
 
 		if ths.translation.Completed >= 1.0 {
 			select {

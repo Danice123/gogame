@@ -8,6 +8,11 @@ import (
 	"github.com/faiface/pixel"
 )
 
+type Coord struct {
+	X int
+	Y int
+}
+
 func LoadPicture(path string) pixel.Picture {
 	if file, err := os.Open(path); err != nil {
 		panic(err)

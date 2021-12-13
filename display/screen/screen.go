@@ -13,7 +13,7 @@ type Screen interface {
 	ShouldRenderBehind() bool
 	Tick(delta int64)
 	Render(delta int64, window *pixelgl.Window)
-	HandleKey(key utils.KEY)
+	HandleKey(pressed func(utils.KEY) bool)
 }
 
 type BaseScreen struct {
@@ -64,7 +64,7 @@ func (ths *ScreenHandler) Render(delta int64, window *pixelgl.Window) {
 	}
 }
 
-func (ths *ScreenHandler) Input(key utils.KEY) {
+func (ths *ScreenHandler) Input(pressed func(utils.KEY) bool) {
 	if ths.Screen != nil {
 		s := ths.Screen
 		for {
@@ -72,7 +72,7 @@ func (ths *ScreenHandler) Input(key utils.KEY) {
 				s = s.Child()
 				continue
 			}
-			s.HandleKey(key)
+			s.HandleKey(pressed)
 			break
 		}
 	}

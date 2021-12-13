@@ -1,8 +1,0 @@
-entities:
-  - name: Red
-    coord:
-      x: 6
-      y: 6
-      layer: 1
-    facing: South
-    script: maps/text.lua

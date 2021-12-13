@@ -1,0 +1,1121 @@
+{
+  "frames": {
+    "rockman-buster#1": {
+      "frame": {
+        "x": 325,
+        "y": 197,
+        "w": 69,
+        "h": 44
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 69,
+        "h": 44
+      },
+      "sourceSize": {
+        "w": 69,
+        "h": 44
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "rockman-buster#2": {
+      "frame": {
+        "x": 325,
+        "y": 241,
+        "w": 69,
+        "h": 44
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 69,
+        "h": 44
+      },
+      "sourceSize": {
+        "w": 69,
+        "h": 44
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "rockman-buster#3": {
+      "frame": {
+        "x": 325,
+        "y": 285,
+        "w": 69,
+        "h": 44
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 69,
+        "h": 44
+      },
+      "sourceSize": {
+        "w": 69,
+        "h": 44
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "rockman-buster#4": {
+      "frame": {
+        "x": 295,
+        "y": 329,
+        "w": 69,
+        "h": 44
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 69,
+        "h": 44
+      },
+      "sourceSize": {
+        "w": 69,
+        "h": 44
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "rockman-buster#5": {
+      "frame": {
+        "x": 325,
+        "y": 197,
+        "w": 69,
+        "h": 44
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 69,
+        "h": 44
+      },
+      "sourceSize": {
+        "w": 69,
+        "h": 44
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "rockman-buster-charging-blue#1": {
+      "frame": {
+        "x": 5,
+        "y": 5,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-blue#2": {
+      "frame": {
+        "x": 5,
+        "y": 69,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-blue#3": {
+      "frame": {
+        "x": 69,
+        "y": 5,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-blue#4": {
+      "frame": {
+        "x": 5,
+        "y": 133,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-blue#5": {
+      "frame": {
+        "x": 69,
+        "y": 69,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-blue#6": {
+      "frame": {
+        "x": 133,
+        "y": 5,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-blue#7": {
+      "frame": {
+        "x": 5,
+        "y": 197,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-blue#8": {
+      "frame": {
+        "x": 69,
+        "y": 133,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-green#1": {
+      "frame": {
+        "x": 133,
+        "y": 69,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-green#2": {
+      "frame": {
+        "x": 133,
+        "y": 133,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-green#3": {
+      "frame": {
+        "x": 197,
+        "y": 69,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-green#4": {
+      "frame": {
+        "x": 261,
+        "y": 5,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-green#5": {
+      "frame": {
+        "x": 5,
+        "y": 325,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-green#6": {
+      "frame": {
+        "x": 69,
+        "y": 261,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-green#7": {
+      "frame": {
+        "x": 133,
+        "y": 197,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-green#8": {
+      "frame": {
+        "x": 197,
+        "y": 133,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-green#9": {
+      "frame": {
+        "x": 261,
+        "y": 69,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-green#10": {
+      "frame": {
+        "x": 197,
+        "y": 5,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-green#11": {
+      "frame": {
+        "x": 5,
+        "y": 261,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-green#12": {
+      "frame": {
+        "x": 69,
+        "y": 197,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-purple#1": {
+      "frame": {
+        "x": 325,
+        "y": 5,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-purple#2": {
+      "frame": {
+        "x": 261,
+        "y": 133,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-purple#3": {
+      "frame": {
+        "x": 325,
+        "y": 69,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-purple#4": {
+      "frame": {
+        "x": 133,
+        "y": 325,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-purple#5": {
+      "frame": {
+        "x": 197,
+        "y": 261,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-purple#6": {
+      "frame": {
+        "x": 261,
+        "y": 197,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-purple#7": {
+      "frame": {
+        "x": 325,
+        "y": 133,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-purple#8": {
+      "frame": {
+        "x": 197,
+        "y": 325,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-purple#9": {
+      "frame": {
+        "x": 261,
+        "y": 261,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-purple#10": {
+      "frame": {
+        "x": 69,
+        "y": 325,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-purple#11": {
+      "frame": {
+        "x": 133,
+        "y": 261,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-buster-charging-purple#12": {
+      "frame": {
+        "x": 197,
+        "y": 197,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rockman-idle#1": {
+      "frame": {
+        "x": 364,
+        "y": 329,
+        "w": 34,
+        "h": 44
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 44
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 44
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "rockman-move#1": {
+      "frame": {
+        "x": 261,
+        "y": 325,
+        "w": 34,
+        "h": 49
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 49
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 49
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "rockman-move#2": {
+      "frame": {
+        "x": 295,
+        "y": 373,
+        "w": 34,
+        "h": 49
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 49
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 49
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "rockman-move#3": {
+      "frame": {
+        "x": 329,
+        "y": 373,
+        "w": 34,
+        "h": 49
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 49
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 49
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "rockman-move#4": {
+      "frame": {
+        "x": 363,
+        "y": 373,
+        "w": 34,
+        "h": 49
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 49
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 49
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "rockman-move#5": {
+      "frame": {
+        "x": 363,
+        "y": 373,
+        "w": 34,
+        "h": 49
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 49
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 49
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "rockman-move#6": {
+      "frame": {
+        "x": 329,
+        "y": 373,
+        "w": 34,
+        "h": 49
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 49
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 49
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "rockman-move#7": {
+      "frame": {
+        "x": 295,
+        "y": 373,
+        "w": 34,
+        "h": 49
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 49
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 49
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "rockman-move#8": {
+      "frame": {
+        "x": 261,
+        "y": 325,
+        "w": 34,
+        "h": 49
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 49
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 49
+      },
+      "pivot": {
+        "x": 0,
+        "y": 1
+      }
+    }
+  },
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "1.0",
+    "image": "rockman.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 427,
+      "h": 427
+    },
+    "scale": "1",
+    "smartupdate": "$TexturePacker:SmartUpdate:e29beef50d453d2a0ee1cb1d08567153:baf0152e16cc8e3dfc31ea5cb74eb1b9:b756eae8ce933d5f78e4c2e69d193081$"
+  },
+  "FrameTimes": {}
+}

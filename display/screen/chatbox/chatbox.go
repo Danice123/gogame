@@ -57,15 +57,15 @@ func (ths *ChatBox) Render(delta int64, window *pixelgl.Window) {
 	ths.content.Render(window.Canvas(), 0, 0)
 }
 
-func (ths *ChatBox) HandleKey(key utils.KEY) {
-	switch key {
-	case utils.ACTIVATE:
-		fallthrough
-	case utils.DECLINE:
-		if ths.textContent.IsFinished() {
-			ths.Finished <- true
-		} else {
-			ths.textContent.Finish()
-		}
-	}
+func (ths *ChatBox) HandleKey(pressed func(utils.KEY) bool) {
+	// switch key {
+	// case utils.ACTIVATE:
+	// 	fallthrough
+	// case utils.DECLINE:
+	// 	if ths.textContent.IsFinished() {
+	// 		ths.Finished <- true
+	// 	} else {
+	// 		ths.textContent.Finish()
+	// 	}
+	// }
 }
