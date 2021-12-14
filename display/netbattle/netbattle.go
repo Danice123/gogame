@@ -3,6 +3,7 @@ package netbattle
 import (
 	"image/color"
 
+	"github.com/Danice123/gogame/display/netbattle/state"
 	"github.com/Danice123/gogame/display/screen"
 	"github.com/Danice123/gogame/display/utils"
 	"github.com/faiface/pixel"
@@ -28,7 +29,12 @@ func (ths *NetBattleScreen) ShouldRenderBehind() bool {
 }
 
 func (ths *NetBattleScreen) Tick(delta int64) {
+	ths.field.Mettaur.AI(state.BoardState{
+		PlayerCoord: ths.field.Player.Coord,
+	})
+
 	ths.field.Player.Tick(delta)
+	ths.field.Mettaur.Tick(delta)
 }
 
 func (ths *NetBattleScreen) Render(delta int64, window *pixelgl.Window) {
