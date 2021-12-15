@@ -177,10 +177,34 @@
             <key>defaultPivotPoint</key>
             <point_f>0.5,0.5</point_f>
             <key>writePivotPoints</key>
-            <false/>
+            <true/>
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">../sprites/generic/generic-health#1.png</key>
+            <key type="filename">../sprites/generic/generic-health#10.png</key>
+            <key type="filename">../sprites/generic/generic-health#2.png</key>
+            <key type="filename">../sprites/generic/generic-health#3.png</key>
+            <key type="filename">../sprites/generic/generic-health#4.png</key>
+            <key type="filename">../sprites/generic/generic-health#5.png</key>
+            <key type="filename">../sprites/generic/generic-health#6.png</key>
+            <key type="filename">../sprites/generic/generic-health#7.png</key>
+            <key type="filename">../sprites/generic/generic-health#8.png</key>
+            <key type="filename">../sprites/generic/generic-health#9.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0,1</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>2,3,4,7</rect>
+                <key>scale9Paddings</key>
+                <rect>2,3,4,7</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">../sprites/generic/generic-move-small#1.png</key>
             <key type="filename">../sprites/generic/generic-move-small#2.png</key>
             <key type="filename">../sprites/generic/generic-move-small#3.png</key>

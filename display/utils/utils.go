@@ -13,7 +13,7 @@ type Coord struct {
 	Y int
 }
 
-func LoadPicture(path string) pixel.Picture {
+func LoadPicture(path string) *pixel.PictureData {
 	if file, err := os.Open(path); err != nil {
 		panic(err)
 	} else {
@@ -21,6 +21,7 @@ func LoadPicture(path string) pixel.Picture {
 		if img, _, err := image.Decode(file); err != nil {
 			panic(err)
 		} else {
+			img.ColorModel()
 			return pixel.PictureDataFromImage(img)
 		}
 	}

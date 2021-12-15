@@ -1,6 +1,7 @@
 package mettaur
 
 import (
+	"image/color"
 	"path/filepath"
 
 	"github.com/Danice123/gogame/display/netbattle/state"
@@ -22,6 +23,7 @@ type Mettaur struct {
 	genericSprites *texturepacker.SpriteSheet
 	delay          *utils.DelayHandler
 
+	health   int
 	aiTimer  uint64
 	ignoreAI bool
 
@@ -29,6 +31,7 @@ type Mettaur struct {
 	idleFrame      int
 	animation      mettaurAnimation
 	animationFrame int
+	flash          bool
 
 	Coord utils.Coord
 }
@@ -45,6 +48,7 @@ func NewMettaur() *Mettaur {
 		idle:           "mettaur-idle",
 		idleFrame:      1,
 		animationFrame: 1,
+		health:         40,
 	}
 }
 
@@ -66,20 +70,33 @@ func (ths *Mettaur) Tick(delta int64) {
 }
 
 func (ths *Mettaur) Render(canvas *pixelgl.Canvas, x int, y int) {
-	ths.sprites.Batch.Clear()
-	ths.genericSprites.Batch.Clear()
+	ths.sprites.Clear()
+	ths.genericSprites.Clear()
+
+	var damageMask color.Color
+	if ths.flash {
+		damageMask = color.RGBA{
+			R: 255,
+			G: 255,
+			B: 255,
+			A: 0,
+		}
+	}
 
 	if ths.animation == MOVE_ANIMATION {
-		ths.genericSprites.DrawFrame(string(ths.animation), ths.animationFrame-1, x, y+25)
-		ths.genericSprites.Batch.Draw(canvas)
+		ths.genericSprites.DrawFrame(string(ths.animation), ths.animationFrame-1, x+12, y+12)
+		ths.genericSprites.Render(canvas)
 	} else {
 		if ths.animation != NONE {
-			ths.sprites.DrawFrame(string(ths.animation), ths.animationFrame-1, x, y)
+			ths.sprites.DrawFrameWithMask(string(ths.animation), ths.animationFrame-1, x, y, damageMask)
 		} else {
-			ths.sprites.DrawFrame(ths.idle, ths.idleFrame-1, x, y)
+			ths.sprites.DrawFrameWithMask(ths.idle, ths.idleFrame-1, x, y, damageMask)
 		}
 
-		ths.sprites.Batch.Draw(canvas)
+		ths.sprites.Render(canvas)
+
+		ths.genericSprites.DrawSpriteNumber("generic-health", ths.health, x+3, y+23)
+		ths.genericSprites.Render(canvas)
 	}
 }
 
@@ -97,6 +114,19 @@ func (ths *Mettaur) AI(state state.BoardState) {
 			ths.raise()
 		}
 	}
+}
+
+func (ths *Mettaur) Damage(amount int) {
+	if ths.health-amount < 0 {
+		ths.health = 0
+	} else {
+		ths.health -= amount
+	}
+
+	ths.flash = true
+	ths.delay.AddDelayedAction(2, func() {
+		ths.flash = false
+	})
 }
 
 func (ths *Mettaur) up() {
@@ -124,8 +154,8 @@ func (ths *Mettaur) raise() {
 	ths.animation = RAISE_ANIMATION
 	ths.animationFrame = 1
 	ths.delay.AddDelayedAction(ths.sprites.FrameLength(string(RAISE_ANIMATION))-1, func() {
-		ths.idle = string(RAISE_ANIMATION)
-		ths.idleFrame = ths.sprites.FrameLength(string(RAISE_ANIMATION)) - 1
+		ths.idle = string(ATTACK_ANIMATION)
+		ths.idleFrame = 1
 
 		ths.delay.AddDelayedAction(10, func() {
 			ths.attack()

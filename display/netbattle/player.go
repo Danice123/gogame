@@ -3,6 +3,7 @@ package netbattle
 import (
 	"path/filepath"
 
+	"github.com/Danice123/gogame/display/netbattle/mettaur"
 	"github.com/Danice123/gogame/display/texturepacker"
 	"github.com/Danice123/gogame/display/utils"
 	"github.com/faiface/pixel/pixelgl"
@@ -31,10 +32,12 @@ type Player struct {
 	busterCharge           uint64
 	isCharging             bool
 
+	hitreg func(utils.Coord) *mettaur.Mettaur
+
 	Coord utils.Coord
 }
 
-func NewPlayer() *Player {
+func NewPlayer(hitreg func(utils.Coord) *mettaur.Mettaur) *Player {
 	p := &Player{
 		sprites: texturepacker.NewSpriteSheet(filepath.Join("resources", "sheets", "rockman.json")),
 		delay:   utils.NewDelayHandler(),
@@ -44,6 +47,7 @@ func NewPlayer() *Player {
 		},
 		animationFrame:         1,
 		chargingAnimationFrame: 1,
+		hitreg:                 hitreg,
 	}
 
 	p.inputHandler = utils.InputHandler{
@@ -96,7 +100,7 @@ func (ths *Player) HandleKey(pressed func(utils.KEY) bool) {
 }
 
 func (ths *Player) Render(canvas *pixelgl.Canvas, x int, y int) {
-	ths.sprites.Batch.Clear()
+	ths.sprites.Clear()
 
 	sprite := "rockman-idle"
 	if ths.animation != NONE {
@@ -108,7 +112,7 @@ func (ths *Player) Render(canvas *pixelgl.Canvas, x int, y int) {
 		ths.sprites.DrawFrame(string(ths.chargingAnimation), ths.chargingAnimationFrame-1, x+20, y+20)
 	}
 
-	ths.sprites.Batch.Draw(canvas)
+	ths.sprites.Render(canvas)
 }
 
 func (ths *Player) up() uint64 {
@@ -173,5 +177,17 @@ func (ths *Player) shoot() uint64 {
 	ths.isCharging = false
 	ths.animation = BUSTER_ANIMATION
 	ths.animationFrame = 1
+
+	for i := ths.Coord.X; i < 6; i++ {
+		hit := ths.hitreg(utils.Coord{
+			X: i,
+			Y: ths.Coord.Y,
+		})
+
+		if hit != nil {
+			hit.Damage(1)
+			break
+		}
+	}
 	return 15
 }

@@ -4,7 +4,6 @@ import (
 	"github.com/Danice123/gogame/display/texturepacker"
 	"github.com/Danice123/gogame/logic"
 	"github.com/Danice123/gogame/logic/entity"
-	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )
 
@@ -46,26 +45,26 @@ func (ths *EntityHandler) Tick() {
 }
 
 func (ths *EntityHandler) Render(canvas *pixelgl.Canvas, tileSize int, tileRatio float64, layer int) {
-	if ths.entities == nil {
-		return
-	}
+	// if ths.entities == nil {
+	// 	return
+	// }
 
-	for _, ss := range ths.sheetCache {
-		ss.Batch.Clear()
-	}
+	// for _, ss := range ths.sheetCache {
+	// 	ss.Batch.Clear()
+	// }
 
-	scaledTileSize := float64(tileSize) * tileRatio
-	for _, e := range ths.entities {
-		if e.GetCoord().Layer == layer {
-			matrix := pixel.IM.Scaled(pixel.ZV, tileRatio).Moved(e.GetCoord().Vector().Scaled(scaledTileSize).Add(pixel.V(scaledTileSize/2, scaledTileSize/2+tileRatio*4)))
-			if e.Translation() != nil {
-				matrix = matrix.Moved(e.Translation().Vector(scaledTileSize))
-			}
-			e.Sprite().Draw(e.SpriteSheet().Batch, matrix)
-		}
-	}
+	// scaledTileSize := float64(tileSize) * tileRatio
+	// for _, e := range ths.entities {
+	// 	if e.GetCoord().Layer == layer {
+	// 		matrix := pixel.IM.Scaled(pixel.ZV, tileRatio).Moved(e.GetCoord().Vector().Scaled(scaledTileSize).Add(pixel.V(scaledTileSize/2, scaledTileSize/2+tileRatio*4)))
+	// 		if e.Translation() != nil {
+	// 			matrix = matrix.Moved(e.Translation().Vector(scaledTileSize))
+	// 		}
+	// 		e.Sprite().Draw(e.SpriteSheet().Batch, matrix)
+	// 	}
+	// }
 
-	for _, ss := range ths.sheetCache {
-		ss.Batch.Draw(canvas)
-	}
+	// for _, ss := range ths.sheetCache {
+	// 	ss.Batch.Draw(canvas)
+	// }
 }
