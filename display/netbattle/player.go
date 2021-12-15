@@ -20,6 +20,7 @@ const CHARGING_PURPLE_ANIMATION = "rockman-buster-charging-purple"
 
 type Player struct {
 	sprites        *texturepacker.SpriteSheet
+	delay          *utils.DelayHandler
 	animation      playerAnimation
 	animationFrame int
 
@@ -36,6 +37,7 @@ type Player struct {
 func NewPlayer() *Player {
 	p := &Player{
 		sprites: texturepacker.NewSpriteSheet(filepath.Join("resources", "sheets", "rockman.json")),
+		delay:   utils.NewDelayHandler(),
 		Coord: utils.Coord{
 			X: 1,
 			Y: 1,
@@ -62,10 +64,11 @@ func NewPlayer() *Player {
 
 func (ths *Player) Tick(delta int64) {
 	ths.inputHandler.Tick()
+	ths.delay.Tick()
 	ths.busterCharge++
 
 	if ths.animation != NONE {
-		if ths.animationFrame == len(ths.sprites.Sprites[string(ths.animation)]) {
+		if ths.animationFrame == ths.sprites.FrameLength(string(ths.animation)) {
 			ths.animation = NONE
 			ths.animationFrame = 1
 		} else {
@@ -80,7 +83,7 @@ func (ths *Player) Tick(delta int64) {
 		} else if ths.busterCharge > 120 && ths.chargingAnimation == CHARGING_GREEN_ANIMATION {
 			ths.chargingAnimation = CHARGING_PURPLE_ANIMATION
 			ths.chargingAnimationFrame = 1
-		} else if ths.chargingAnimationFrame == len(ths.sprites.Sprites[string(ths.chargingAnimation)]) {
+		} else if ths.chargingAnimationFrame == ths.sprites.FrameLength(string(ths.chargingAnimation)) {
 			ths.chargingAnimationFrame = 1
 		} else {
 			ths.chargingAnimationFrame++
@@ -110,9 +113,11 @@ func (ths *Player) Render(canvas *pixelgl.Canvas, x int, y int) {
 
 func (ths *Player) up() uint64 {
 	if ths.Coord.Y > 0 {
-		ths.Coord.Y--
 		ths.animation = MOVE_ANIMATION
 		ths.animationFrame = 1
+		ths.delay.AddDelayedAction(4, func() {
+			ths.Coord.Y--
+		})
 		return 10
 	}
 	return 0
@@ -120,9 +125,11 @@ func (ths *Player) up() uint64 {
 
 func (ths *Player) down() uint64 {
 	if ths.Coord.Y < 2 {
-		ths.Coord.Y++
 		ths.animation = MOVE_ANIMATION
 		ths.animationFrame = 1
+		ths.delay.AddDelayedAction(4, func() {
+			ths.Coord.Y++
+		})
 		return 10
 	}
 	return 0
@@ -130,9 +137,11 @@ func (ths *Player) down() uint64 {
 
 func (ths *Player) left() uint64 {
 	if ths.Coord.X > 0 {
-		ths.Coord.X--
 		ths.animation = MOVE_ANIMATION
 		ths.animationFrame = 1
+		ths.delay.AddDelayedAction(4, func() {
+			ths.Coord.X--
+		})
 		return 10
 	}
 	return 0
@@ -140,9 +149,11 @@ func (ths *Player) left() uint64 {
 
 func (ths *Player) right() uint64 {
 	if ths.Coord.X < 2 {
-		ths.Coord.X++
 		ths.animation = MOVE_ANIMATION
 		ths.animationFrame = 1
+		ths.delay.AddDelayedAction(4, func() {
+			ths.Coord.X++
+		})
 		return 10
 	}
 	return 0

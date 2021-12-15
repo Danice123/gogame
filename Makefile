@@ -9,6 +9,6 @@ build:
 	zip -r dist.zip dist
 
 sprites:
-	TexturePacker resources/sheets/rockman.tps
-	jq -s '.[0] * .[1]' resources/sheets/rockman.json resources/sheets/rockman.ani.json > resources/sheets/rockman.json.new
-	mv resources/sheets/rockman.json.new resources/sheets/rockman.json
+	TexturePacker resources/sheets/mettaur.tps
+	jq -s '.[0] * .[1]' resources/sheets/mettaur.json resources/sheets/mettaur.ani.json > resources/sheets/mettaur.json.new
+	mv resources/sheets/mettaur.json.new resources/sheets/mettaur.json

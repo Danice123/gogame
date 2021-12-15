@@ -21,7 +21,9 @@ type Mettaur struct {
 	sprites        *texturepacker.SpriteSheet
 	genericSprites *texturepacker.SpriteSheet
 	delay          *utils.DelayHandler
-	aiTimer        uint64
+
+	aiTimer  uint64
+	ignoreAI bool
 
 	idle           string
 	idleFrame      int
@@ -50,9 +52,9 @@ func (ths *Mettaur) Tick(delta int64) {
 	ths.delay.Tick()
 
 	if ths.animation != NONE {
-		animationLength := len(ths.sprites.Sprites[string(ths.animation)])
+		animationLength := ths.sprites.FrameLength(string(ths.animation))
 		if ths.animation == MOVE_ANIMATION {
-			animationLength = len(ths.genericSprites.Sprites[string(ths.animation)])
+			animationLength = ths.genericSprites.FrameLength(string(ths.animation))
 		}
 		if ths.animationFrame == animationLength {
 			ths.animation = NONE
@@ -83,6 +85,9 @@ func (ths *Mettaur) Render(canvas *pixelgl.Canvas, x int, y int) {
 
 func (ths *Mettaur) AI(state state.BoardState) {
 	ths.aiTimer++
+	if ths.ignoreAI {
+		return
+	}
 	if ths.aiTimer%60 == 0 {
 		if ths.Coord.Y > state.PlayerCoord.Y {
 			ths.up()
@@ -115,20 +120,35 @@ func (ths *Mettaur) down() {
 }
 
 func (ths *Mettaur) raise() {
+	ths.ignoreAI = true
 	ths.animation = RAISE_ANIMATION
 	ths.animationFrame = 1
-	ths.delay.AddDelayedAction(len(ths.sprites.Sprites[string(RAISE_ANIMATION)]), func() {
+	ths.delay.AddDelayedAction(ths.sprites.FrameLength(string(RAISE_ANIMATION))-1, func() {
 		ths.idle = string(RAISE_ANIMATION)
-		ths.idleFrame = len(ths.sprites.Sprites[string(RAISE_ANIMATION)]) - 1
+		ths.idleFrame = ths.sprites.FrameLength(string(RAISE_ANIMATION)) - 1
+
+		ths.delay.AddDelayedAction(10, func() {
+			ths.attack()
+		})
 	})
 }
 
 func (ths *Mettaur) attack() {
-	ths.animation = RAISE_ANIMATION
+	ths.animation = ATTACK_ANIMATION
 	ths.animationFrame = 1
+	ths.delay.AddDelayedAction(ths.sprites.FrameLength(string(ATTACK_ANIMATION))-1, func() {
+		ths.idle = string(ATTACK_ANIMATION)
+		ths.idleFrame = ths.sprites.FrameLength(string(ATTACK_ANIMATION)) - 1
+		ths.withdraw()
+	})
 }
 
 func (ths *Mettaur) withdraw() {
-	ths.animation = RAISE_ANIMATION
+	ths.animation = WITHDRAW_ANIMATION
 	ths.animationFrame = 1
+	ths.delay.AddDelayedAction(ths.sprites.FrameLength(string(WITHDRAW_ANIMATION))-1, func() {
+		ths.idle = "mettaur-idle"
+		ths.idleFrame = 1
+		ths.ignoreAI = false
+	})
 }

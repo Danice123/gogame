@@ -1,0 +1,55 @@
+{
+    "frames": {
+        "mettaur-raise#1": {
+            "frametime": 3
+        },
+        "mettaur-raise#2": {
+            "frametime": 3
+        },
+        "mettaur-raise#3": {
+            "frametime": 4
+        },
+        "mettaur-raise#4": {
+            "frametime": 5
+        },
+        "mettaur-raise#5": {
+            "frametime": 2
+        },
+        "mettaur-raise#6": {
+            "frametime": 4
+        },
+        "mettaur-attack#1": {
+            "frametime": 2
+        },
+        "mettaur-attack#2": {
+            "frametime": 2
+        },
+        "mettaur-attack#3": {
+            "frametime": 4
+        },
+        "mettaur-attack#4": {
+            "frametime": 2
+        },
+        "mettaur-attack#5": {
+            "frametime": 3
+        },
+        "mettaur-attack#6": {
+            "frametime": 3
+        },
+        "mettaur-withdraw#1": {
+            "frametime": 2
+        },
+        "mettaur-withdraw#2": {
+            "frametime": 3
+        },
+        "mettaur-withdraw#3": {
+            "frametime": 4
+        },
+        "mettaur-withdraw#4": {
+            "frametime": 5
+        },
+        "mettaur-withdraw#5": {
+            "frametime": 4
+        }
+    }
+}

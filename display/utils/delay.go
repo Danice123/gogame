@@ -7,31 +7,29 @@ type delayobject struct {
 }
 
 type DelayHandler struct {
-	tracked []delayobject
+	tracked map[*delayobject]bool
 }
 
 func NewDelayHandler() *DelayHandler {
 	return &DelayHandler{
-		tracked: []delayobject{},
+		tracked: map[*delayobject]bool{},
 	}
 }
 
 func (ths *DelayHandler) Tick() {
-	unfinished := []delayobject{}
-	for _, ob := range ths.tracked {
+	for ob := range ths.tracked {
 		ob.timer++
 		if ob.timer >= ob.delay {
 			ob.action()
-		} else {
-			unfinished = append(unfinished, ob)
+			delete(ths.tracked, ob)
 		}
 	}
-	ths.tracked = unfinished
 }
 
 func (ths *DelayHandler) AddDelayedAction(delay int, action func()) {
-	ths.tracked = append(ths.tracked, delayobject{
+	ob := &delayobject{
 		delay:  delay,
 		action: action,
-	})
+	}
+	ths.tracked[ob] = true
 }

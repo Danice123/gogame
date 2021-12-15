@@ -45,7 +45,7 @@ func (ths *Base) SpriteSheet() *texturepacker.SpriteSheet {
 }
 
 func (ths *Base) Sprite() *pixel.Sprite {
-	return ths.Spritesheet.Sprites[ths.EntityName][ths.Frame] // [string(ths.facing)]
+	return nil
 }
 
 func (ths *Base) GetCoord() logic.Coord {

@@ -34,6 +34,7 @@ type Texture struct {
 	SpriteSourceSize Bounds
 	SourceSize       Size
 	Pivot            Pivot
+	Frametime        int
 }
 
 type Meta struct {
@@ -51,11 +52,12 @@ type PackedTextures struct {
 }
 
 type SpriteSheet struct {
-	Name    string
-	Batch   *pixel.Batch
-	Sprites map[string][]*pixel.Sprite
+	Name  string
+	Batch *pixel.Batch
 
-	data *PackedTextures
+	data            *PackedTextures
+	sprites         map[string][]*pixel.Sprite
+	animationFrames map[string][]int
 }
 
 func breakDownDescriptor(descriptor string) (string, int) {
@@ -100,15 +102,31 @@ func NewSpriteSheet(path string) *SpriteSheet {
 		}
 	}
 
-	sheet.Sprites = map[string][]*pixel.Sprite{}
+	sheet.sprites = map[string][]*pixel.Sprite{}
+	sheet.animationFrames = map[string][]int{}
 	for name, size := range frameSize {
-		sheet.Sprites[name] = make([]*pixel.Sprite, size)
+		sheet.sprites[name] = make([]*pixel.Sprite, size)
+
+		sheet.animationFrames[name] = []int{}
+		if size == 1 {
+			sheet.animationFrames[name] = append(sheet.animationFrames[name], 0)
+			continue
+		}
+		for i := 0; i < size; i++ {
+			spriteFrameTime := data.Frames[fmt.Sprintf("%s#%d", name, i+1)].Frametime
+			if spriteFrameTime == 0 {
+				spriteFrameTime = 1
+			}
+			for j := 0; j < spriteFrameTime; j++ {
+				sheet.animationFrames[name] = append(sheet.animationFrames[name], i)
+			}
+		}
 	}
 
 	for descriptor, sprite := range data.Frames {
 		name, frameId := breakDownDescriptor(descriptor)
 		s := pixel.NewSprite(image, pixel.R(float64(sprite.Frame.X), float64(data.Meta.Size.H-sprite.Frame.Y), float64(sprite.Frame.X+sprite.Frame.W), float64(data.Meta.Size.H-sprite.Frame.Y-sprite.Frame.H)))
-		sheet.Sprites[name][frameId-1] = s
+		sheet.sprites[name][frameId-1] = s
 	}
 
 	return sheet
@@ -119,7 +137,8 @@ func (ths *SpriteSheet) Draw(name string, x int, y int) {
 }
 
 func (ths *SpriteSheet) DrawFrame(name string, frame int, x int, y int) {
-	if sprite, ok := ths.Sprites[name]; ok {
+	if sprite, ok := ths.sprites[name]; ok {
+		frame = ths.animationFrames[name][frame]
 		if frame >= len(sprite) {
 			fmt.Fprintf(os.Stderr, "Bad sprite ref: %s, frame: %d", name, frame)
 		}
@@ -136,4 +155,8 @@ func (ths *SpriteSheet) DrawFrame(name string, frame int, x int, y int) {
 	} else {
 		fmt.Fprintf(os.Stderr, "Bad sprite ref: %s", name)
 	}
+}
+
+func (ths *SpriteSheet) FrameLength(name string) int {
+	return len(ths.animationFrames[name])
 }
