@@ -2,6 +2,7 @@ package mettaur
 
 import (
 	"image/color"
+	"math/rand"
 	"path/filepath"
 
 	"github.com/Danice123/gogame/display/netbattle/state"
@@ -18,6 +19,8 @@ const RAISE_ANIMATION mettaurAnimation = "mettaur-raise"
 const ATTACK_ANIMATION mettaurAnimation = "mettaur-attack"
 const WITHDRAW_ANIMATION mettaurAnimation = "mettaur-withdraw"
 
+const BUSTER_HIT_EFFECT mettaurAnimation = "generic-effect-buster"
+
 type Mettaur struct {
 	sprites        *texturepacker.SpriteSheet
 	genericSprites *texturepacker.SpriteSheet
@@ -31,7 +34,12 @@ type Mettaur struct {
 	idleFrame      int
 	animation      mettaurAnimation
 	animationFrame int
-	flash          bool
+
+	flash         bool
+	effect        mettaurAnimation
+	effectFrame   int
+	effectXOffset int
+	effectYOffset int
 
 	Coord utils.Coord
 }
@@ -48,6 +56,7 @@ func NewMettaur() *Mettaur {
 		idle:           "mettaur-idle",
 		idleFrame:      1,
 		animationFrame: 1,
+		effectFrame:    1,
 		health:         40,
 	}
 }
@@ -65,6 +74,16 @@ func (ths *Mettaur) Tick(delta int64) {
 			ths.animationFrame = 1
 		} else {
 			ths.animationFrame++
+		}
+	}
+
+	if ths.effect != NONE {
+		animationLength := ths.genericSprites.FrameLength(string(ths.effect))
+		if ths.effectFrame == animationLength {
+			ths.effect = NONE
+			ths.effectFrame = 1
+		} else {
+			ths.effectFrame++
 		}
 	}
 }
@@ -96,6 +115,10 @@ func (ths *Mettaur) Render(canvas *pixelgl.Canvas, x int, y int) {
 		ths.sprites.Render(canvas)
 
 		ths.genericSprites.DrawSpriteNumber("generic-health", ths.health, x+3, y+23)
+		if ths.effect != NONE {
+
+			ths.genericSprites.DrawFrame(string(ths.effect), ths.effectFrame-1, x+ths.effectXOffset, y+25+ths.effectYOffset)
+		}
 		ths.genericSprites.Render(canvas)
 	}
 }
@@ -124,6 +147,10 @@ func (ths *Mettaur) Damage(amount int) {
 	}
 
 	ths.flash = true
+	ths.effect = BUSTER_HIT_EFFECT
+	ths.effectFrame = 1
+	ths.effectXOffset = rand.Intn(20)
+	ths.effectYOffset = rand.Intn(10) - 5
 	ths.delay.AddDelayedAction(2, func() {
 		ths.flash = false
 	})
