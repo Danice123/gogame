@@ -199,6 +199,76 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">../sprites/generic/generic-effect-buster-green#1.png</key>
+            <key type="filename">../sprites/generic/generic-effect-buster-green#2.png</key>
+            <key type="filename">../sprites/generic/generic-effect-buster-green#3.png</key>
+            <key type="filename">../sprites/generic/generic-effect-buster-green#4.png</key>
+            <key type="filename">../sprites/generic/generic-effect-buster-green#5.png</key>
+            <key type="filename">../sprites/generic/generic-effect-buster-green#6.png</key>
+            <key type="filename">../sprites/generic/generic-effect-buster-green#7.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>11,10,21,19</rect>
+                <key>scale9Paddings</key>
+                <rect>11,10,21,19</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">../sprites/generic/generic-effect-buster-purple#1.png</key>
+            <key type="filename">../sprites/generic/generic-effect-buster-purple#2.png</key>
+            <key type="filename">../sprites/generic/generic-effect-buster-purple#3.png</key>
+            <key type="filename">../sprites/generic/generic-effect-buster-purple#4.png</key>
+            <key type="filename">../sprites/generic/generic-effect-buster-purple#5.png</key>
+            <key type="filename">../sprites/generic/generic-effect-buster-purple#6.png</key>
+            <key type="filename">../sprites/generic/generic-effect-buster-purple#7.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>14,13,28,26</rect>
+                <key>scale9Paddings</key>
+                <rect>14,13,28,26</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">../sprites/generic/generic-explosion#1.png</key>
+            <key type="filename">../sprites/generic/generic-explosion#10.png</key>
+            <key type="filename">../sprites/generic/generic-explosion#11.png</key>
+            <key type="filename">../sprites/generic/generic-explosion#12.png</key>
+            <key type="filename">../sprites/generic/generic-explosion#13.png</key>
+            <key type="filename">../sprites/generic/generic-explosion#14.png</key>
+            <key type="filename">../sprites/generic/generic-explosion#2.png</key>
+            <key type="filename">../sprites/generic/generic-explosion#3.png</key>
+            <key type="filename">../sprites/generic/generic-explosion#4.png</key>
+            <key type="filename">../sprites/generic/generic-explosion#5.png</key>
+            <key type="filename">../sprites/generic/generic-explosion#6.png</key>
+            <key type="filename">../sprites/generic/generic-explosion#7.png</key>
+            <key type="filename">../sprites/generic/generic-explosion#8.png</key>
+            <key type="filename">../sprites/generic/generic-explosion#9.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,1</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,12,24,24</rect>
+                <key>scale9Paddings</key>
+                <rect>12,12,24,24</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">../sprites/generic/generic-health#1.png</key>
             <key type="filename">../sprites/generic/generic-health#10.png</key>
             <key type="filename">../sprites/generic/generic-health#2.png</key>

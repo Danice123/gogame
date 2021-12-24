@@ -1,0 +1,37 @@
+{
+    "frames": {
+        "generic-explosion#3": {
+            "frametime": 2
+        },
+        "generic-explosion#4": {
+            "frametime": 2
+        },
+        "generic-explosion#5": {
+            "frametime": 2
+        },
+        "generic-explosion#6": {
+            "frametime": 2
+        },
+        "generic-explosion#7": {
+            "frametime": 2
+        },
+        "generic-explosion#8": {
+            "frametime": 2
+        },
+        "generic-explosion#9": {
+            "frametime": 2
+        },
+        "generic-explosion#10": {
+            "frametime": 2
+        },
+        "generic-explosion#11": {
+            "frametime": 2
+        },
+        "generic-explosion#12": {
+            "frametime": 3
+        },
+        "generic-explosion#13": {
+            "frametime": 3
+        }
+    }
+}

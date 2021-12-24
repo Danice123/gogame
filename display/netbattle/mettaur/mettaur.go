@@ -11,15 +11,17 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 )
 
-type mettaurAnimation string
+type MettaurAnimation string
 
-const NONE mettaurAnimation = ""
-const MOVE_ANIMATION mettaurAnimation = "generic-move-small"
-const RAISE_ANIMATION mettaurAnimation = "mettaur-raise"
-const ATTACK_ANIMATION mettaurAnimation = "mettaur-attack"
-const WITHDRAW_ANIMATION mettaurAnimation = "mettaur-withdraw"
+const NONE MettaurAnimation = ""
+const MOVE_ANIMATION MettaurAnimation = "generic-move-small"
+const RAISE_ANIMATION MettaurAnimation = "mettaur-raise"
+const ATTACK_ANIMATION MettaurAnimation = "mettaur-attack"
+const WITHDRAW_ANIMATION MettaurAnimation = "mettaur-withdraw"
 
-const BUSTER_HIT_EFFECT mettaurAnimation = "generic-effect-buster"
+const BUSTER_HIT_EFFECT MettaurAnimation = "generic-effect-buster"
+const BUSTER_GREEN_HIT_EFFECT MettaurAnimation = "generic-effect-buster-green"
+const BUSTER_PURPLE_HIT_EFFECT MettaurAnimation = "generic-effect-buster-purple"
 
 type Mettaur struct {
 	sprites        *texturepacker.SpriteSheet
@@ -29,17 +31,20 @@ type Mettaur struct {
 	health   int
 	aiTimer  uint64
 	ignoreAI bool
+	dead     bool
 
 	idle           string
 	idleFrame      int
-	animation      mettaurAnimation
+	animation      MettaurAnimation
 	animationFrame int
 
-	flash         bool
-	effect        mettaurAnimation
-	effectFrame   int
-	effectXOffset int
-	effectYOffset int
+	flash          bool
+	effect         MettaurAnimation
+	effectFrame    int
+	effectXOffset  int
+	effectYOffset  int
+	exploding      bool
+	explodingFrame int
 
 	Coord utils.Coord
 }
@@ -64,7 +69,7 @@ func NewMettaur() *Mettaur {
 func (ths *Mettaur) Tick(delta int64) {
 	ths.delay.Tick()
 
-	if ths.animation != NONE {
+	if ths.animation != NONE && !ths.exploding {
 		animationLength := ths.sprites.FrameLength(string(ths.animation))
 		if ths.animation == MOVE_ANIMATION {
 			animationLength = ths.genericSprites.FrameLength(string(ths.animation))
@@ -86,9 +91,18 @@ func (ths *Mettaur) Tick(delta int64) {
 			ths.effectFrame++
 		}
 	}
+
+	if ths.exploding {
+		ths.explodingFrame++
+		ths.flash = ths.explodingFrame%4 > 1
+	}
 }
 
 func (ths *Mettaur) Render(canvas *pixelgl.Canvas, x int, y int) {
+	if ths.dead {
+		return
+	}
+
 	ths.sprites.Clear()
 	ths.genericSprites.Clear()
 
@@ -114,9 +128,22 @@ func (ths *Mettaur) Render(canvas *pixelgl.Canvas, x int, y int) {
 
 		ths.sprites.Render(canvas)
 
-		ths.genericSprites.DrawSpriteNumber("generic-health", ths.health, x+3, y+23)
-		if ths.effect != NONE {
+		if ths.exploding {
+			if ths.explodingFrame < ths.genericSprites.FrameLength("generic-explosion") {
+				ths.genericSprites.DrawFrame("generic-explosion", ths.explodingFrame, x+7, y-5)
+			}
+			if ths.explodingFrame-4 > 0 && ths.explodingFrame-4 < ths.genericSprites.FrameLength("generic-explosion") {
+				ths.genericSprites.DrawFrame("generic-explosion", ths.explodingFrame-4, x+10, y-5)
+			}
+			if ths.explodingFrame-8 > 0 && ths.explodingFrame-8 < ths.genericSprites.FrameLength("generic-explosion") {
+				ths.genericSprites.DrawFrame("generic-explosion", ths.explodingFrame-8, x+13, y-5)
+			}
 
+		} else {
+			ths.genericSprites.DrawSpriteNumber("generic-health", ths.health, x+3, y+23)
+		}
+
+		if ths.effect != NONE {
 			ths.genericSprites.DrawFrame(string(ths.effect), ths.effectFrame-1, x+ths.effectXOffset, y+25+ths.effectYOffset)
 		}
 		ths.genericSprites.Render(canvas)
@@ -139,7 +166,7 @@ func (ths *Mettaur) AI(state state.BoardState) {
 	}
 }
 
-func (ths *Mettaur) Damage(amount int) {
+func (ths *Mettaur) Damage(amount int, hitEffect MettaurAnimation) {
 	if ths.health-amount < 0 {
 		ths.health = 0
 	} else {
@@ -147,12 +174,25 @@ func (ths *Mettaur) Damage(amount int) {
 	}
 
 	ths.flash = true
-	ths.effect = BUSTER_HIT_EFFECT
+	ths.effect = hitEffect
 	ths.effectFrame = 1
 	ths.effectXOffset = rand.Intn(20)
 	ths.effectYOffset = rand.Intn(10) - 5
 	ths.delay.AddDelayedAction(2, func() {
 		ths.flash = false
+		if ths.health == 0 {
+			ths.death()
+		}
+	})
+}
+
+func (ths *Mettaur) death() {
+	ths.explodingFrame = 1
+	ths.exploding = true
+	ths.ignoreAI = true
+	ths.delay.CancelAll()
+	ths.delay.AddDelayedAction(20, func() {
+		ths.dead = true
 	})
 }
 

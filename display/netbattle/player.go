@@ -185,9 +185,16 @@ func (ths *Player) shoot() uint64 {
 		})
 
 		if hit != nil {
-			hit.Damage(1)
+			if ths.busterCharge > 120 {
+				hit.Damage(10, mettaur.BUSTER_PURPLE_HIT_EFFECT)
+			} else if ths.busterCharge > 60 {
+				hit.Damage(5, mettaur.BUSTER_GREEN_HIT_EFFECT)
+			} else {
+				hit.Damage(1, mettaur.BUSTER_HIT_EFFECT)
+			}
 			break
 		}
 	}
+	ths.busterCharge = 0
 	return 15
 }

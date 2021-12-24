@@ -33,3 +33,9 @@ func (ths *DelayHandler) AddDelayedAction(delay int, action func()) {
 	}
 	ths.tracked[ob] = true
 }
+
+func (ths *DelayHandler) CancelAll() {
+	for ob := range ths.tracked {
+		delete(ths.tracked, ob)
+	}
+}
