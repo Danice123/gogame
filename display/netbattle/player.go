@@ -3,6 +3,7 @@ package netbattle
 import (
 	"path/filepath"
 
+	"github.com/Danice123/gogame/display/netbattle/field"
 	"github.com/Danice123/gogame/display/netbattle/mettaur"
 	"github.com/Danice123/gogame/display/texturepacker"
 	"github.com/Danice123/gogame/display/utils"
@@ -20,7 +21,9 @@ const CHARGING_GREEN_ANIMATION = "rockman-buster-charging-green"
 const CHARGING_PURPLE_ANIMATION = "rockman-buster-charging-purple"
 
 type Player struct {
+	field          *field.BattleField
 	sprites        *texturepacker.SpriteSheet
+	coord          utils.Coord
 	delay          *utils.DelayHandler
 	animation      playerAnimation
 	animationFrame int
@@ -32,22 +35,21 @@ type Player struct {
 	busterCharge           uint64
 	isCharging             bool
 
-	hitreg func(utils.Coord) *mettaur.Mettaur
-
-	Coord utils.Coord
+	Health int
 }
 
-func NewPlayer(hitreg func(utils.Coord) *mettaur.Mettaur) *Player {
+func NewPlayer(field *field.BattleField) *Player {
 	p := &Player{
+		field:   field,
 		sprites: texturepacker.NewSpriteSheet(filepath.Join("resources", "sheets", "rockman.json")),
 		delay:   utils.NewDelayHandler(),
-		Coord: utils.Coord{
+		coord: utils.Coord{
 			X: 1,
 			Y: 1,
 		},
+		Health:                 100,
 		animationFrame:         1,
 		chargingAnimationFrame: 1,
-		hitreg:                 hitreg,
 	}
 
 	p.inputHandler = utils.InputHandler{
@@ -62,11 +64,21 @@ func NewPlayer(hitreg func(utils.Coord) *mettaur.Mettaur) *Player {
 			utils.DECLINE: p.shoot,
 		},
 	}
-
+	field.RegisterObject(p)
 	return p
 }
 
-func (ths *Player) Tick(delta int64) {
+func (ths *Player) Coord() utils.Coord {
+	return ths.coord
+}
+
+func (ths *Player) HighlightTile() bool {
+	return false
+}
+
+func (ths *Player) AI(utils.Coord) {}
+
+func (ths *Player) Tick() {
 	ths.inputHandler.Tick()
 	ths.delay.Tick()
 	ths.busterCharge++
@@ -100,6 +112,8 @@ func (ths *Player) HandleKey(pressed func(utils.KEY) bool) {
 }
 
 func (ths *Player) Render(canvas *pixelgl.Canvas, x int, y int) {
+	x += 3
+	y += 5
 	ths.sprites.Clear()
 
 	sprite := "rockman-idle"
@@ -116,11 +130,11 @@ func (ths *Player) Render(canvas *pixelgl.Canvas, x int, y int) {
 }
 
 func (ths *Player) up() uint64 {
-	if ths.Coord.Y > 0 {
+	if ths.coord.Y > 0 {
 		ths.animation = MOVE_ANIMATION
 		ths.animationFrame = 1
 		ths.delay.AddDelayedAction(4, func() {
-			ths.Coord.Y--
+			ths.coord.Y--
 		})
 		return 10
 	}
@@ -128,11 +142,11 @@ func (ths *Player) up() uint64 {
 }
 
 func (ths *Player) down() uint64 {
-	if ths.Coord.Y < 2 {
+	if ths.coord.Y < 2 {
 		ths.animation = MOVE_ANIMATION
 		ths.animationFrame = 1
 		ths.delay.AddDelayedAction(4, func() {
-			ths.Coord.Y++
+			ths.coord.Y++
 		})
 		return 10
 	}
@@ -140,11 +154,11 @@ func (ths *Player) down() uint64 {
 }
 
 func (ths *Player) left() uint64 {
-	if ths.Coord.X > 0 {
+	if ths.coord.X > 0 {
 		ths.animation = MOVE_ANIMATION
 		ths.animationFrame = 1
 		ths.delay.AddDelayedAction(4, func() {
-			ths.Coord.X--
+			ths.coord.X--
 		})
 		return 10
 	}
@@ -152,11 +166,11 @@ func (ths *Player) left() uint64 {
 }
 
 func (ths *Player) right() uint64 {
-	if ths.Coord.X < 2 {
+	if ths.coord.X < 2 {
 		ths.animation = MOVE_ANIMATION
 		ths.animationFrame = 1
 		ths.delay.AddDelayedAction(4, func() {
-			ths.Coord.X++
+			ths.coord.X++
 		})
 		return 10
 	}
@@ -178,23 +192,33 @@ func (ths *Player) shoot() uint64 {
 	ths.animation = BUSTER_ANIMATION
 	ths.animationFrame = 1
 
-	for i := ths.Coord.X; i < 6; i++ {
-		hit := ths.hitreg(utils.Coord{
+	for i := ths.coord.X + 1; i < 6; i++ {
+		hits := ths.field.HitReg(utils.Coord{
 			X: i,
-			Y: ths.Coord.Y,
+			Y: ths.coord.Y,
 		})
 
-		if hit != nil {
+		for _, hit := range hits {
 			if ths.busterCharge > 120 {
-				hit.Damage(10, mettaur.BUSTER_PURPLE_HIT_EFFECT)
+				hit.Damage(10, string(mettaur.BUSTER_PURPLE_HIT_EFFECT))
 			} else if ths.busterCharge > 60 {
-				hit.Damage(5, mettaur.BUSTER_GREEN_HIT_EFFECT)
+				hit.Damage(5, string(mettaur.BUSTER_GREEN_HIT_EFFECT))
 			} else {
-				hit.Damage(1, mettaur.BUSTER_HIT_EFFECT)
+				hit.Damage(1, string(mettaur.BUSTER_HIT_EFFECT))
 			}
+		}
+		if len(hits) > 0 {
 			break
 		}
 	}
 	ths.busterCharge = 0
 	return 15
+}
+
+func (ths *Player) Damage(amount int, hitEffect string) {
+	if ths.Health-amount < 0 {
+		ths.Health = 0
+	} else {
+		ths.Health -= amount
+	}
 }

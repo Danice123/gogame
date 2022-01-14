@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"path/filepath"
 
-	"github.com/Danice123/gogame/display/netbattle/state"
+	"github.com/Danice123/gogame/display/netbattle/field"
 	"github.com/Danice123/gogame/display/texturepacker"
 	"github.com/Danice123/gogame/display/utils"
 	"github.com/faiface/pixel/pixelgl"
@@ -24,8 +24,10 @@ const BUSTER_GREEN_HIT_EFFECT MettaurAnimation = "generic-effect-buster-green"
 const BUSTER_PURPLE_HIT_EFFECT MettaurAnimation = "generic-effect-buster-purple"
 
 type Mettaur struct {
+	field          *field.BattleField
 	sprites        *texturepacker.SpriteSheet
 	genericSprites *texturepacker.SpriteSheet
+	coord          utils.Coord
 	delay          *utils.DelayHandler
 
 	health   int
@@ -45,16 +47,15 @@ type Mettaur struct {
 	effectYOffset  int
 	exploding      bool
 	explodingFrame int
-
-	Coord utils.Coord
 }
 
-func NewMettaur() *Mettaur {
-	return &Mettaur{
+func NewMettaur(field *field.BattleField) *Mettaur {
+	m := &Mettaur{
+		field:          field,
 		sprites:        texturepacker.NewSpriteSheet(filepath.Join("resources", "sheets", "mettaur.json")),
 		genericSprites: texturepacker.NewSpriteSheet(filepath.Join("resources", "sheets", "generic.json")),
 		delay:          utils.NewDelayHandler(),
-		Coord: utils.Coord{
+		coord: utils.Coord{
 			X: 4,
 			Y: 1,
 		},
@@ -64,9 +65,19 @@ func NewMettaur() *Mettaur {
 		effectFrame:    1,
 		health:         40,
 	}
+	field.RegisterObject(m)
+	return m
 }
 
-func (ths *Mettaur) Tick(delta int64) {
+func (ths *Mettaur) Coord() utils.Coord {
+	return ths.coord
+}
+
+func (ths *Mettaur) HighlightTile() bool {
+	return false
+}
+
+func (ths *Mettaur) Tick() {
 	ths.delay.Tick()
 
 	if ths.animation != NONE && !ths.exploding {
@@ -103,6 +114,8 @@ func (ths *Mettaur) Render(canvas *pixelgl.Canvas, x int, y int) {
 		return
 	}
 
+	x += 9
+	y += 5
 	ths.sprites.Clear()
 	ths.genericSprites.Clear()
 
@@ -150,15 +163,15 @@ func (ths *Mettaur) Render(canvas *pixelgl.Canvas, x int, y int) {
 	}
 }
 
-func (ths *Mettaur) AI(state state.BoardState) {
+func (ths *Mettaur) AI(playerCoord utils.Coord) {
 	ths.aiTimer++
 	if ths.ignoreAI {
 		return
 	}
 	if ths.aiTimer%60 == 0 {
-		if ths.Coord.Y > state.PlayerCoord.Y {
+		if ths.coord.Y > playerCoord.Y {
 			ths.up()
-		} else if ths.Coord.Y < state.PlayerCoord.Y {
+		} else if ths.coord.Y < playerCoord.Y {
 			ths.down()
 		} else {
 			ths.raise()
@@ -166,7 +179,7 @@ func (ths *Mettaur) AI(state state.BoardState) {
 	}
 }
 
-func (ths *Mettaur) Damage(amount int, hitEffect MettaurAnimation) {
+func (ths *Mettaur) Damage(amount int, hitEffect string) {
 	if ths.health-amount < 0 {
 		ths.health = 0
 	} else {
@@ -174,7 +187,7 @@ func (ths *Mettaur) Damage(amount int, hitEffect MettaurAnimation) {
 	}
 
 	ths.flash = true
-	ths.effect = hitEffect
+	ths.effect = MettaurAnimation(hitEffect)
 	ths.effectFrame = 1
 	ths.effectXOffset = rand.Intn(20)
 	ths.effectYOffset = rand.Intn(10) - 5
@@ -197,21 +210,21 @@ func (ths *Mettaur) death() {
 }
 
 func (ths *Mettaur) up() {
-	if ths.Coord.Y > 0 {
+	if ths.coord.Y > 0 {
 		ths.animation = MOVE_ANIMATION
 		ths.animationFrame = 1
 		ths.delay.AddDelayedAction(4, func() {
-			ths.Coord.Y--
+			ths.coord.Y--
 		})
 	}
 }
 
 func (ths *Mettaur) down() {
-	if ths.Coord.Y < 2 {
+	if ths.coord.Y < 2 {
 		ths.animation = MOVE_ANIMATION
 		ths.animationFrame = 1
 		ths.delay.AddDelayedAction(4, func() {
-			ths.Coord.Y++
+			ths.coord.Y++
 		})
 	}
 }
@@ -237,6 +250,10 @@ func (ths *Mettaur) attack() {
 		ths.idle = string(ATTACK_ANIMATION)
 		ths.idleFrame = ths.sprites.FrameLength(string(ATTACK_ANIMATION)) - 1
 		ths.withdraw()
+		NewMettaurAttack(ths.field, utils.Coord{
+			X: ths.coord.X - 1,
+			Y: ths.coord.Y,
+		})
 	})
 }
 

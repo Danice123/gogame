@@ -50,6 +50,30 @@
         },
         "mettaur-withdraw#5": {
             "frametime": 4
+        },
+        "mettaur-attack-effect#1": {
+            "frametime": 2
+        },
+        "mettaur-attack-effect#2": {
+            "frametime": 3
+        },
+        "mettaur-attack-effect#3": {
+            "frametime": 4
+        },
+        "mettaur-attack-effect#4": {
+            "frametime": 3
+        },
+        "mettaur-attack-effect#5": {
+            "frametime": 3
+        },
+        "mettaur-attack-effect#6": {
+            "frametime": 3
+        },
+        "mettaur-attack-effect#7": {
+            "frametime": 4
+        },
+        "mettaur-attack-effect#10": {
+            "frametime": 3
         }
     }
 }

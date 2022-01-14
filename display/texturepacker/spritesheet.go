@@ -211,6 +211,17 @@ func (ths *SpriteSheet) DrawSpriteNumber(name string, number int, x int, y int) 
 	}
 }
 
+func (ths *SpriteSheet) DrawSpriteNumberPadded(name string, number int, digits int, paddingFrame int, x int, y int) {
+	for i := digits; i > 0; i-- {
+		if number < int(math.Pow10(i-1)) {
+			ths.DrawFrame(name, paddingFrame, x+8*(digits-i), y)
+		} else {
+			n := number % int(math.Pow10(i)) / int(math.Pow10(i-1))
+			ths.DrawFrame(name, n, x+8*(digits-i), y)
+		}
+	}
+}
+
 func (ths *SpriteSheet) FrameLength(name string) int {
 	return len(ths.animationFrames[name])
 }
